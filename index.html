@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SPAC Auth</title>
+  <title>SPAC - Welcome</title>
 
   <style>
     body {
+      margin: 0;
       font-family: Arial;
-      background: #0f172a;
+      background: linear-gradient(135deg, #0f172a, #111827);
       color: white;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding-top: 60px;
+      height: 100vh;
     }
 
-    .box {
-      background: #111827;
-      padding: 20px;
-      border-radius: 12px;
-      width: 300px;
+    .card {
+      width: 340px;
+      background: #0b1220;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     input {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
-      border-radius: 8px;
+      border-radius: 10px;
       border: none;
       outline: none;
+      background: #111827;
+      color: white;
     }
 
     button {
       width: 100%;
       padding: 12px;
-      margin-top: 8px;
+      margin-top: 10px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       background: #22c55e;
       color: white;
+      font-weight: bold;
       cursor: pointer;
     }
 
@@ -46,52 +56,49 @@
     }
 
     .toggle {
-      margin-top: -35px;
-      margin-left: 250px;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #38bdf8;
+      cursor: pointer;
+    }
+
+    .eye {
+      float: right;
+      margin-top: -38px;
+      margin-right: 10px;
       cursor: pointer;
       font-size: 14px;
-      color: #38bdf8;
-      position: relative;
+      color: #9ca3af;
     }
 
     #status {
       margin-top: 15px;
       font-size: 13px;
+      text-align: center;
       color: #38bdf8;
-      text-align: center;
-    }
-
-    .switch {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #9ca3af;
-      cursor: pointer;
-      text-align: center;
     }
   </style>
 </head>
 
 <body>
 
-<h2>SPAC Login</h2>
+<div class="card">
 
-<div class="box">
+  <h2 id="title">SPAC Sign Up</h2>
 
   <input id="email" placeholder="Email" />
+  
+  <input id="password" type="password" placeholder="Password" />
+  <div class="eye" onclick="togglePass()">👁</div>
 
-  <div style="position: relative;">
-    <input id="password" type="password" placeholder="Password" />
-    <span class="toggle" onclick="togglePassword()">👁</span>
+  <button onclick="handleAuth()" id="btn">Create Account</button>
+
+  <div class="toggle" onclick="switchMode()">
+    Already have an account? Login
   </div>
 
-  <button onclick="signup()">Sign Up</button>
-  <button onclick="login()">Login</button>
-
-  <div class="switch" onclick="switchMode()">
-    Switch mode (Sign up / Login)
-  </div>
-
-  <p id="status"></p>
+  <div id="status"></div>
 
 </div>
 
@@ -122,38 +129,41 @@ function setStatus(msg) {
   document.getElementById("status").innerText = msg;
 }
 
-window.signup = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    const user = await createUserWithEmailAndPassword(auth, email, password);
-    setStatus("Signup success ✔ " + user.user.email);
-  } catch (e) {
-    setStatus("Signup error ❌ " + e.message);
-  }
-};
-
-window.login = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    const user = await signInWithEmailAndPassword(auth, email, password);
-    setStatus("Login success ✔ " + user.user.email);
-  } catch (e) {
-    setStatus("Login error ❌ " + e.message);
-  }
-};
-
-window.togglePassword = function () {
-  const pass = document.getElementById("password");
-  pass.type = pass.type === "password" ? "text" : "password";
-};
-
 window.switchMode = function () {
   isLogin = !isLogin;
-  setStatus(isLogin ? "Login mode" : "Signup mode");
+
+  document.getElementById("title").innerText = isLogin ? "SPAC Login" : "SPAC Sign Up";
+  document.getElementById("btn").innerText = isLogin ? "Login" : "Create Account";
+
+  document.querySelector(".toggle").innerText =
+    isLogin ? "Don't have an account? Sign up" : "Already have an account? Login";
+
+  setStatus("");
+};
+
+window.handleAuth = async function () {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+
+    if (!isLogin) {
+      const user = await createUserWithEmailAndPassword(auth, email, password);
+      setStatus("Account created ✔ " + user.user.email);
+    } else {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      setStatus("Login successful ✔ " + user.user.email);
+    }
+
+  } catch (e) {
+    setStatus("Error ❌ " + e.message);
+  }
+};
+
+window.togglePass = function () {
+  const pass = document.getElementById("password");
+  pass.type = pass.type === "password" ? "text" : "password";
 };
 
 </script>
