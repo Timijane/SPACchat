@@ -1,172 +1,1133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>SPAC - Welcome</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SPACchat — Connect in the Spirit</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: linear-gradient(135deg, #0f172a, #111827);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
 
-    .card {
-      width: 340px;
-      background: #0b1220;
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a2e;
+            --bg-input: #16162a;
+            --accent-fire: #ff6b35;
+            --accent-ember: #ff8c42;
+            --accent-gold: #ffd166;
+            --accent-spark: #ffb347;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6a6a80;
+            --border-subtle: #2a2a3e;
+            --border-input: #2e2e44;
+            --error: #ff4757;
+            --success: #2ed573;
+            --brand-gradient: linear-gradient(135deg, #ff6b35 0%, #ff8c42 25%, #ffd166 50%, #ffb347 75%, #ff6b35 100%);
+            --card-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 120px rgba(255, 107, 53, 0.08);
+            --glow-fire: 0 0 40px rgba(255, 107, 53, 0.3), 0 0 80px rgba(255, 140, 66, 0.15);
+        }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      background: #111827;
-      color: white;
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image:
+                radial-gradient(ellipse at 30% 20%, rgba(255, 107, 53, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(255, 140, 66, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 209, 102, 0.02) 0%, transparent 70%);
+        }
 
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 10px;
-      background: #22c55e;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        /* ---- LAZY LOADING SKELETON ---- */
+        #lazy-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #lazy-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-frame {
+            width: 320px;
+            height: 480px;
+            border-radius: 24px;
+            background: var(--bg-card);
+            box-shadow: var(--card-shadow);
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: loaderPulse 1.8s ease-in-out infinite;
+        }
+        @keyframes loaderPulse {
+            0%,
+            100% {
+                box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 60px rgba(255, 107, 53, 0.06);
+            }
+            50% {
+                box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 100px rgba(255, 107, 53, 0.15);
+            }
+        }
+        .loader-logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .loader-logo-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            animation: shimmer 1.8s ease-in-out infinite;
+        }
+        .loader-line {
+            height: 14px;
+            border-radius: 7px;
+            background: linear-gradient(90deg, #1a1a2e 0%, #2a2a3e 50%, #1a1a2e 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.8s ease-in-out infinite;
+        }
+        .loader-line.short {
+            width: 60%;
+            align-self: center;
+        }
+        .loader-line.medium {
+            width: 80%;
+        }
+        .loader-line.full {
+            width: 100%;
+        }
+        .loader-input {
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #16162a 0%, #1e1e38 50%, #16162a 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.8s ease-in-out infinite;
+        }
+        .loader-btn {
+            height: 50px;
+            border-radius: 14px;
+            background: linear-gradient(90deg, #2a1a10 0%, #3a2518 50%, #2a1a10 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.8s ease-in-out infinite;
+            margin-top: 8px;
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        .loader-spinner-text {
+            color: var(--text-muted);
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .loader-dot-animation::after {
+            content: '';
+            animation: dots 1.5s steps(3, end) infinite;
+        }
+        @keyframes dots {
+            0% {
+                content: '';
+            }
+            33% {
+                content: '.';
+            }
+            66% {
+                content: '..';
+            }
+            100% {
+                content: '...';
+            }
+        }
 
-    button:hover {
-      background: #16a34a;
-    }
+        /* ---- MAIN APP ---- */
+        #app {
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+        }
+        #app.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    .toggle {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 13px;
-      color: #38bdf8;
-      cursor: pointer;
-    }
+        .auth-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 40px 32px 36px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .auth-card::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(255, 209, 102, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
 
-    .eye {
-      float: right;
-      margin-top: -38px;
-      margin-right: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #9ca3af;
-    }
+        /* ---- BRANDING ---- */
+        .brand-area {
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .logo-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: var(--brand-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 900;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+            box-shadow: var(--glow-fire);
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+        @keyframes logoGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 40px rgba(255, 107, 53, 0.3), 0 0 80px rgba(255, 140, 66, 0.15);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(255, 107, 53, 0.5), 0 0 120px rgba(255, 140, 66, 0.3), 0 0 160px rgba(255, 209, 102, 0.15);
+            }
+        }
+        .spark-particles {
+            position: absolute;
+            inset: -15px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            animation: sparkFloat 2s ease-in-out infinite;
+        }
+        .spark:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        .spark:nth-child(2) {
+            top: 5%;
+            right: 10%;
+            animation-delay: 0.4s;
+        }
+        .spark:nth-child(3) {
+            bottom: 15%;
+            left: 0%;
+            animation-delay: 0.8s;
+        }
+        .spark:nth-child(4) {
+            bottom: 5%;
+            right: 5%;
+            animation-delay: 1.2s;
+        }
+        .spark:nth-child(5) {
+            top: 40%;
+            left: -8%;
+            animation-delay: 1.6s;
+        }
+        .spark:nth-child(6) {
+            top: 30%;
+            right: -5%;
+            animation-delay: 0.6s;
+        }
+        .spark:nth-child(7) {
+            bottom: 30%;
+            left: 2%;
+            animation-delay: 1.0s;
+        }
+        .spark:nth-child(8) {
+            bottom: 25%;
+            right: 8%;
+            animation-delay: 1.4s;
+        }
+        @keyframes sparkFloat {
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.4;
+            }
+            25% {
+                transform: translateY(-12px) scale(2);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-6px) scale(1.5);
+                opacity: 0.7;
+            }
+            75% {
+                transform: translateY(-18px) scale(0.8);
+                opacity: 0.3;
+            }
+        }
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .brand-tagline {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 4px;
+        }
 
-    #status {
-      margin-top: 15px;
-      font-size: 13px;
-      text-align: center;
-      color: #38bdf8;
-    }
-  </style>
+        /* ---- FORM ---- */
+        .form-container {
+            position: relative;
+            z-index: 1;
+        }
+        .input-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            margin-left: 4px;
+        }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 44px 14px 16px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-input);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .input-wrapper input:focus {
+            border-color: var(--accent-fire);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1), 0 0 20px rgba(255, 107, 53, 0.05);
+            background: #1a1a35;
+        }
+        .input-wrapper input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .input-wrapper .input-icon {
+            position: absolute;
+            right: 14px;
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .input-wrapper .input-icon:hover {
+            color: var(--text-secondary);
+        }
+        .input-wrapper .input-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .error-message {
+            font-size: 11px;
+            color: var(--error);
+            margin-top: 5px;
+            margin-left: 4px;
+            font-weight: 500;
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+        .error-message.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---- BUTTONS ---- */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: var(--brand-gradient);
+            color: #fff;
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25);
+            margin-top: 8px;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 12px 40px rgba(255, 107, 53, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--accent-ember);
+            font-weight: 500;
+            padding: 10px;
+            margin-top: 4px;
+            letter-spacing: 0.2px;
+        }
+        .btn-ghost:hover {
+            color: var(--accent-gold);
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        /* ---- TOGGLE ---- */
+        .toggle-area {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+        .toggle-link {
+            color: var(--accent-ember);
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            text-decoration: none;
+        }
+        .toggle-link:hover {
+            color: var(--accent-gold);
+            text-decoration: underline;
+        }
+
+        /* ---- MODAL (Password Reset) ---- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px 28px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-subtle);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-input);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover {
+            background: #2a2a3e;
+            color: #fff;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .modal-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* ---- TOAST ---- */
+        .toast {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: #1a2e1a;
+            border: 1px solid #2ed573;
+            color: #2ed573;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 200;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.error {
+            background: #2e1a1a;
+            border-color: #ff4757;
+            color: #ff4757;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 480px) {
+            #app {
+                padding: 12px;
+            }
+            .auth-card {
+                padding: 28px 20px 24px;
+                border-radius: 20px;
+            }
+            .logo-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 30px;
+                border-radius: 16px;
+            }
+            .brand-name {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="card">
+    <!-- ============ LAZY LOADER ============ -->
+    <div id="lazy-loader">
+        <div class="loader-frame">
+            <div class="loader-logo-area">
+                <div class="loader-logo-circle"></div>
+                <div class="loader-line short"></div>
+                <div class="loader-line medium" style="margin-top:4px;"></div>
+            </div>
+            <div class="loader-line full" style="height:12px;"></div>
+            <div class="loader-input"></div>
+            <div class="loader-input"></div>
+            <div class="loader-btn"></div>
+            <div class="loader-line medium" style="margin-top:16px;"></div>
+        </div>
+        <p class="loader-spinner-text">Loading SPACchat<span class="loader-dot-animation"></span></p>
+    </div>
 
-  <h2 id="title">SPAC Sign Up</h2>
+    <!-- ============ TOAST ============ -->
+    <div class="toast" id="toast"></div>
 
-  <input id="email" placeholder="Email" />
-  
-  <input id="password" type="password" placeholder="Password" />
-  <div class="eye" onclick="togglePass()">👁</div>
+    <!-- ============ PASSWORD RESET MODAL ============ -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeResetModal()">✕</button>
+            <h3 class="modal-title">Reset Password</h3>
+            <p class="modal-subtitle">Enter your email and we'll send you a reset link.</p>
+            <div class="input-group">
+                <label>Email</label>
+                <div class="input-wrapper">
+                    <input type="email" id="resetEmail" placeholder="you@email.com" autocomplete="email">
+                </div>
+                <p class="error-message" id="resetError"></p>
+            </div>
+            <button class="btn btn-primary" onclick="sendPasswordReset()" id="resetBtn">Send Reset Link</button>
+        </div>
+    </div>
 
-  <button onclick="handleAuth()" id="btn">Create Account</button>
+    <!-- ============ MAIN APP ============ -->
+    <div id="app">
+        <div class="auth-card">
 
-  <div class="toggle" onclick="switchMode()">
-    Already have an account? Login
-  </div>
+            <!-- Branding -->
+            <div class="brand-area">
+                <div class="logo-container">
+                    <div class="logo-icon">S</div>
+                    <div class="spark-particles">
+                        <div class="spark"></div>
+                        <div class="spark"></div>
+                        <div class="spark"></div>
+                        <div class="spark"></div>
+                        <div class="spark"></div>
+                        <div class="spark"></div>
+                        <div class="spark"></div>
+                        <div class="spark"></div>
+                    </div>
+                </div>
+                <h1 class="brand-name">SPACchat</h1>
+                <p class="brand-tagline">Connect in the Spirit</p>
+            </div>
 
-  <div id="status"></div>
+            <!-- Form -->
+            <div class="form-container">
+                <form id="authForm" onsubmit="handleSubmit(event)">
 
-</div>
+                    <!-- Name (Sign Up only) -->
+                    <div class="input-group" id="nameGroup" style="display:none;">
+                        <label>Full Name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="fullName" placeholder="John Doe" autocomplete="name">
+                        </div>
+                        <p class="error-message" id="nameError"></p>
+                    </div>
 
-<script type="module">
+                    <!-- Email -->
+                    <div class="input-group">
+                        <label>Email</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" placeholder="you@email.com" required autocomplete="email">
+                        </div>
+                        <p class="error-message" id="emailError"></p>
+                    </div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+                    <!-- Password -->
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                            <span class="input-icon" onclick="togglePassword()" title="Show/Hide Password">
+                                <!-- Eye icon -->
+                                <svg id="eyeIcon" viewBox="0 0 24 24">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <p class="error-message" id="passwordError"></p>
+                    </div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCo6bD1yB9SHG4Iem-MhniQ4YyOEQv-_YA",
-  authDomain: "spacchat-e35b8.firebaseapp.com",
-  projectId: "spacchat-e35b8",
-  storageBucket: "spacchat-e35b8.firebasestorage.app",
-  messagingSenderId: "407081887262",
-  appId: "1:407081887262:web:62879d6d38f6482982700f"
-};
+                    <!-- Confirm Password (Sign Up only) -->
+                    <div class="input-group" id="confirmGroup" style="display:none;">
+                        <label>Confirm Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="confirmPassword" placeholder="••••••••" autocomplete="new-password">
+                        </div>
+                        <p class="error-message" id="confirmError"></p>
+                    </div>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+                    <!-- Submit -->
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span id="submitText">Sign In</span>
+                    </button>
+                </form>
 
-let isLogin = false;
+                <!-- Forgot Password -->
+                <button class="btn btn-ghost" onclick="openResetModal()" id="forgotBtn">Forgot Password?</button>
+            </div>
 
-function setStatus(msg) {
-  document.getElementById("status").innerText = msg;
-}
+            <!-- Toggle Login/Signup -->
+            <div class="toggle-area">
+                <span id="toggleText">Don't have an account?</span>
+                <span class="toggle-link" id="toggleLink" onclick="toggleMode()">Sign Up</span>
+            </div>
+        </div>
+    </div>
 
-window.switchMode = function () {
-  isLogin = !isLogin;
+    <!-- ============ SCRIPTS ============ -->
+    <script type="module">
+        // ──────────────────────────────────────
+        // FIREBASE + SUPABASE CONFIGURATION
+        // ──────────────────────────────────────
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  document.getElementById("title").innerText = isLogin ? "SPAC Login" : "SPAC Sign Up";
-  document.getElementById("btn").innerText = isLogin ? "Login" : "Create Account";
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCo6bD1yB9SHG4Iem-MhniQ4YyOEQv-_YA",
+            authDomain: "spacchat-e35b8.firebaseapp.com",
+            projectId: "spacchat-e35b8",
+            storageBucket: "spacchat-e35b8.firebasestorage.app",
+            messagingSenderId: "407081887262",
+            appId: "1:407081887262:web:62879d6d38f6482982700f",
+            measurementId: "G-T7KFRFZH7H"
+        };
 
-  document.querySelector(".toggle").innerText =
-    isLogin ? "Don't have an account? Sign up" : "Already have an account? Login";
+        // Supabase Config
+        const SUPABASE_URL = "https://akbwcgzymrygsjpmwysm.supabase.co";
+        const SUPABASE_ANON_KEY =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrYndjZ3p5bXJ5Z3NqcG13eXNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyOTE4MjUsImV4cCI6MjA5NDg2NzgyNX0.--2SPkyKOI2aWACgib6uPUFTzLvHlocPfdRZvUeLGI4";
 
-  setStatus("");
-};
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-window.handleAuth = async function () {
+        // ──────────────────────────────────────
+        // GLOBAL STATE
+        // ──────────────────────────────────────
+        let isSignUpMode = false;
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+        // ──────────────────────────────────────
+        // LAZY LOADER
+        // ──────────────────────────────────────
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('lazy-loader').classList.add('hidden');
+                document.getElementById('app').classList.add('visible');
+            }, 1800);
+        });
 
-  try {
+        // Fallback: hide loader after 4s even if load event hasn't fired
+        setTimeout(() => {
+            document.getElementById('lazy-loader').classList.add('hidden');
+            document.getElementById('app').classList.add('visible');
+        }, 4000);
 
-    if (!isLogin) {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
-      setStatus("Account created ✔ " + user.user.email);
-    } else {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      setStatus("Login successful ✔ " + user.user.email);
-    }
+        // ──────────────────────────────────────
+        // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+        // ──────────────────────────────────────
+        window.toggleMode = toggleMode;
+        window.togglePassword = togglePassword;
+        window.handleSubmit = handleSubmit;
+        window.openResetModal = openResetModal;
+        window.closeResetModal = closeResetModal;
+        window.sendPasswordReset = sendPasswordReset;
 
-  } catch (e) {
-    setStatus("Error ❌ " + e.message);
-  }
-};
+        // ──────────────────────────────────────
+        // TOGGLE LOGIN / SIGN UP
+        // ──────────────────────────────────────
+        function toggleMode() {
+            isSignUpMode = !isSignUpMode;
 
-window.togglePass = function () {
-  const pass = document.getElementById("password");
-  pass.type = pass.type === "password" ? "text" : "password";
-};
+            const nameGroup = document.getElementById('nameGroup');
+            const confirmGroup = document.getElementById('confirmGroup');
+            const submitText = document.getElementById('submitText');
+            const toggleText = document.getElementById('toggleText');
+            const toggleLink = document.getElementById('toggleLink');
+            const forgotBtn = document.getElementById('forgotBtn');
+            const nameInput = document.getElementById('fullName');
+            const confirmInput = document.getElementById('confirmPassword');
 
-</script>
+            if (isSignUpMode) {
+                nameGroup.style.display = 'block';
+                confirmGroup.style.display = 'block';
+                submitText.textContent = 'Create Account';
+                toggleText.textContent = 'Already have an account? ';
+                toggleLink.textContent = 'Sign In';
+                forgotBtn.style.display = 'none';
+                nameInput.required = true;
+                confirmInput.required = true;
+            } else {
+                nameGroup.style.display = 'none';
+                confirmGroup.style.display = 'none';
+                submitText.textContent = 'Sign In';
+                toggleText.textContent = "Don't have an account? ";
+                toggleLink.textContent = 'Sign Up';
+                forgotBtn.style.display = 'block';
+                nameInput.required = false;
+                confirmInput.required = false;
+            }
 
+            clearErrors();
+        }
+
+        // ──────────────────────────────────────
+        // TOGGLE PASSWORD VISIBILITY
+        // ──────────────────────────────────────
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                // Eye-off icon
+                eyeIcon.innerHTML = `
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                            <line x1="1" y1="1" x2="23" y2="23"/>
+                        `;
+            } else {
+                passwordInput.type = 'password';
+                // Eye icon
+                eyeIcon.innerHTML = `
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        `;
+            }
+        }
+
+        // ──────────────────────────────────────
+        // ERROR HANDLING
+        // ──────────────────────────────────────
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.input-wrapper input').forEach(el => {
+                el.style.borderColor = 'var(--border-input)';
+                el.style.boxShadow = 'none';
+            });
+        }
+
+        function showError(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.classList.add('show');
+            const input = el.previousElementSibling?.querySelector('input');
+            if (input) {
+                input.style.borderColor = 'var(--error)';
+                input.style.boxShadow = '0 0 0 3px rgba(255,71,87,0.1)';
+            }
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + (isError ? 'error' : '');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ──────────────────────────────────────
+        // FORM SUBMISSION
+        // ──────────────────────────────────────
+        async function handleSubmit(e) {
+            e.preventDefault();
+            clearErrors();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const fullName = document.getElementById('fullName').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+
+            // Validation
+            let hasError = false;
+
+            if (!email) {
+                showError('emailError', 'Email is required');
+                hasError = true;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showError('emailError', 'Please enter a valid email');
+                hasError = true;
+            }
+
+            if (!password) {
+                showError('passwordError', 'Password is required');
+                hasError = true;
+            } else if (password.length < 6) {
+                showError('passwordError', 'Password must be at least 6 characters');
+                hasError = true;
+            }
+
+            if (isSignUpMode) {
+                if (!fullName || fullName.length < 2) {
+                    showError('nameError', 'Full name is required');
+                    hasError = true;
+                }
+                if (!confirmPassword) {
+                    showError('confirmError', 'Please confirm your password');
+                    hasError = true;
+                } else if (password !== confirmPassword) {
+                    showError('confirmError', 'Passwords do not match');
+                    hasError = true;
+                }
+            }
+
+            if (hasError) return;
+
+            // Loading state
+            submitBtn.disabled = true;
+            submitText.textContent = isSignUpMode ? 'Creating Account...' : 'Signing In...';
+
+            try {
+                if (isSignUpMode) {
+                    // ── SIGN UP ──
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+
+                    // Create user profile in Supabase
+                    const response = await fetch(`${SUPABASE_URL}/rest/v1/users`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Prefer': 'return=minimal'
+                        },
+                        body: JSON.stringify({
+                            id: user.uid,
+                            email: email,
+                            username: email.split('@')[0] + '_' + Math.random().toString(36).substring(2,
+                                6),
+                            full_name: fullName,
+                            created_at: new Date().toISOString(),
+                            updated_at: new Date().toISOString()
+                        })
+                    });
+
+                    if (!response.ok && response.status !== 201) {
+                        const errBody = await response.text();
+                        console.warn('Supabase profile creation warning:', errBody);
+                        // Don't block — user can complete profile later
+                    }
+
+                    showToast('Account created! Welcome to SPACchat ✨');
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1200);
+
+                } else {
+                    // ── SIGN IN ──
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showToast('Welcome back! 🔥');
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 800);
+                }
+            } catch (error) {
+                console.error('Auth error:', error);
+                let message = 'Something went wrong. Please try again.';
+
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        message = 'This email is already registered. Sign in instead.';
+                        showError('emailError', message);
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'Invalid email address.';
+                        showError('emailError', message);
+                        break;
+                    case 'auth/weak-password':
+                        message = 'Password is too weak. Use at least 6 characters.';
+                        showError('passwordError', message);
+                        break;
+                    case 'auth/user-not-found':
+                        message = 'No account found with this email.';
+                        showError('emailError', message);
+                        break;
+                    case 'auth/wrong-password':
+                        message = 'Incorrect password.';
+                        showError('passwordError', message);
+                        break;
+                    case 'auth/invalid-credential':
+                        message = 'Invalid email or password.';
+                        showError('emailError', message);
+                        break;
+                    case 'auth/too-many-requests':
+                        message = 'Too many attempts. Please try again later.';
+                        break;
+                    default:
+                        message = error.message || message;
+                }
+
+                if (!document.querySelector('.error-message.show')) {
+                    showToast(message, true);
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitText.textContent = isSignUpMode ? 'Create Account' : 'Sign In';
+            }
+        }
+
+        // ──────────────────────────────────────
+        // PASSWORD RESET MODAL
+        // ──────────────────────────────────────
+        function openResetModal() {
+            document.getElementById('resetModal').classList.add('active');
+            document.getElementById('resetEmail').value = document.getElementById('email').value;
+            document.getElementById('resetError').classList.remove('show');
+        }
+
+        function closeResetModal() {
+            document.getElementById('resetModal').classList.remove('active');
+        }
+
+        async function sendPasswordReset() {
+            const email = document.getElementById('resetEmail').value.trim();
+            const resetError = document.getElementById('resetError');
+            const resetBtn = document.getElementById('resetBtn');
+
+            resetError.classList.remove('show');
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                resetError.textContent = 'Please enter a valid email address.';
+                resetError.classList.add('show');
+                return;
+            }
+
+            resetBtn.disabled = true;
+            resetBtn.textContent = 'Sending...';
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showToast('Password reset link sent! Check your email 📧');
+                closeResetModal();
+            } catch (error) {
+                console.error('Reset error:', error);
+                let message = 'Failed to send reset email.';
+                if (error.code === 'auth/user-not-found') {
+                    message = 'No account found with this email.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = 'Too many requests. Try again later.';
+                }
+                resetError.textContent = message;
+                resetError.classList.add('show');
+            } finally {
+                resetBtn.disabled = false;
+                resetBtn.textContent = 'Send Reset Link';
+            }
+        }
+
+        // ──────────────────────────────────────
+        // AUTH STATE LISTENER
+        // ──────────────────────────────────────
+        onAuthStateChanged(auth, (user) => {
+            if (user && window.location.pathname === '/' || window.location.pathname === '/index.html') {
+                // User is already signed in — redirect to dashboard
+                window.location.href = '/dashboard.html';
+            }
+        });
+
+        // Close modal on overlay click
+        document.getElementById('resetModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeResetModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeResetModal();
+            }
+        });
+
+        console.log('%c🔥 SPACchat Auth Ready %c| %cConnect in the Spirit',
+            'color: #ff6b35; font-weight: bold; font-size: 16px;',
+            '',
+            'color: #ffd166;');
+    </script>
 </body>
 </html>
