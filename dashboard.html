@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <title>SPACchat — Home</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           CSS CUSTOM PROPERTIES (THEME SYSTEM)
+           ======================================== */
+        :root {
+            /* Dark Theme (Default) */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a2e;
+            --bg-card: #1a1a2e;
+            --bg-input: #16162a;
+            --bg-hover: #1e1e35;
+            --bg-nav: #12121ae6;
+            --accent: #ff6b35;
+            --accent-light: #ff8c42;
+            --accent-gold: #ffd166;
+            --accent-glow: rgba(255, 107, 53, 0.3);
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6a6a80;
+            --text-inverse: #0a0a0f;
+            --border-subtle: #2a2a3e;
+            --border-input: #2e2e44;
+            --shadow-card: 0 4px 20px rgba(0,0,0,0.3);
+            --shadow-nav: 0 -2px 20px rgba(0,0,0,0.4);
+            --error: #ff4757;
+            --success: #2ed573;
+            --warning: #ffa502;
+            --brand-gradient: linear-gradient(135deg, #ff6b35 0%, #ff8c42 25%, #ffd166 50%, #ffb347 75%, #ff6b35 100%);
+            --skeleton-base: #1a1a2e;
+            --skeleton-shine: #2a2a3e;
+            --overlay: rgba(0,0,0,0.6);
+            --glass: rgba(18,18,26,0.85);
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --bg-primary: #f8f9fc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f0f2f8;
+            --bg-card: #ffffff;
+            --bg-input: #f0f2f8;
+            --bg-hover: #e8eaf0;
+            --bg-nav: #ffffffe6;
+            --accent: #ff6b35;
+            --accent-light: #ff8c42;
+            --accent-gold: #e6a800;
+            --accent-glow: rgba(255, 107, 53, 0.2);
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a5e;
+            --text-muted: #8a8a9e;
+            --text-inverse: #ffffff;
+            --border-subtle: #e0e4f0;
+            --border-input: #d0d4e0;
+            --shadow-card: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow-nav: 0 -2px 12px rgba(0,0,0,0.06);
+            --skeleton-base: #e8eaf0;
+            --skeleton-shine: #f0f2f8;
+            --overlay: rgba(0,0,0,0.3);
+            --glass: rgba(255,255,255,0.9);
+        }
+
+        /* Custom Accent Themes */
+        [data-accent="fire"] { --accent: #ff6b35; --accent-light: #ff8c42; --accent-gold: #ffd166; --accent-glow: rgba(255,107,53,0.3); --brand-gradient: linear-gradient(135deg, #ff6b35 0%, #ff8c42 25%, #ffd166 50%, #ffb347 75%, #ff6b35 100%); }
+        [data-accent="royal"] { --accent: #6c3cff; --accent-light: #8b5cff; --accent-gold: #c4a0ff; --accent-glow: rgba(108,60,255,0.3); --brand-gradient: linear-gradient(135deg, #6c3cff 0%, #8b5cff 25%, #a878ff 50%, #8b5cff 75%, #6c3cff 100%); }
+        [data-accent="ocean"] { --accent: #0ea5e9; --accent-light: #38bdf8; --accent-gold: #7dd3fc; --accent-glow: rgba(14,165,233,0.3); --brand-gradient: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 25%, #7dd3fc 50%, #38bdf8 75%, #0ea5e9 100%); }
+        [data-accent="emerald"] { --accent: #10b981; --accent-light: #34d399; --accent-gold: #6ee7b7; --accent-glow: rgba(16,185,129,0.3); --brand-gradient: linear-gradient(135deg, #10b981 0%, #34d399 25%, #6ee7b7 50%, #34d399 75%, #10b981 100%); }
+        [data-accent="rose"] { --accent: #f43f5e; --accent-light: #fb7185; --accent-gold: #fda4af; --accent-glow: rgba(244,63,94,0.3); --brand-gradient: linear-gradient(135deg, #f43f5e 0%, #fb7185 25%, #fda4af 50%, #fb7185 75%, #f43f5e 100%); }
+
+        /* ========================================
+           GLOBAL RESET & BASE
+           ======================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background 0.4s ease, color 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* ========================================
+           LAZY LOADER
+           ======================================== */
+        #lazy-loader {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--bg-primary);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            gap: 24px;
+        }
+        #lazy-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-spinner {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            border: 3px solid var(--border-subtle);
+            border-top-color: var(--accent);
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-text {
+            color: var(--text-muted);
+            font-size: 14px; font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========================================
+           TOP HEADER
+           ======================================== */
+        .header {
+            flex-shrink: 0;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 10;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+        .header-brand {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .header-logo {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: var(--brand-gradient);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 900; color: #fff;
+            box-shadow: 0 0 20px var(--accent-glow);
+            animation: logoGlow 3s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes logoGlow {
+            0%,100% { box-shadow: 0 0 20px var(--accent-glow); }
+            50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 60px var(--accent-glow); }
+        }
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 800;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.3px;
+        }
+        .header-actions {
+            display: flex; align-items: center; gap: 6px;
+        }
+        .icon-btn {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+            font-size: 20px;
+        }
+        .icon-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .icon-btn:active { transform: scale(0.92); }
+        .badge-dot {
+            position: absolute; top: 6px; right: 6px;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--error);
+            border: 2px solid var(--bg-secondary);
+        }
+
+        /* ========================================
+           MAIN CONTENT AREA (SCROLLABLE)
+           ======================================== */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            padding-bottom: 8px;
+        }
+        .main-content::-webkit-scrollbar { width: 0; }
+
+        /* ========================================
+           STORIES ROW
+           ======================================== */
+        .stories-row {
+            display: flex; gap: 12px;
+            padding: 14px 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: border-color 0.4s ease;
+        }
+        .stories-row::-webkit-scrollbar { height: 0; }
+        .story-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 6px; flex-shrink: 0; cursor: pointer;
+            scroll-snap-align: start;
+            transition: transform 0.15s ease;
+        }
+        .story-item:active { transform: scale(0.94); }
+        .story-ring {
+            width: 62px; height: 62px;
+            border-radius: 50%;
+            padding: 3px;
+            background: var(--brand-gradient);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .story-ring.viewed { background: var(--border-subtle); }
+        .story-ring.my-story { background: var(--border-subtle); position: relative; }
+        .story-ring.my-story::after {
+            content: '+'; position: absolute;
+            bottom: -2px; right: -2px;
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff; font-size: 14px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            border: 2px solid var(--bg-primary);
+        }
+        .story-avatar {
+            width: 54px; height: 54px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--bg-primary);
+            object-fit: cover;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 18px; color: var(--text-muted);
+        }
+        .story-name {
+            font-size: 11px; color: var(--text-secondary);
+            max-width: 64px; text-align: center;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           CREATE POST BAR
+           ======================================== */
+        .create-post-bar {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: all 0.4s ease;
+        }
+        .create-post-avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 15px; color: var(--text-muted);
+        }
+        .create-post-input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 22px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-input);
+            color: var(--text-muted);
+            font-size: 14px; font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .create-post-input:hover { border-color: var(--accent); color: var(--text-secondary); }
+        .create-post-btn {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none; color: #fff;
+            font-size: 22px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .create-post-btn:active { transform: scale(0.9); }
+
+        /* ========================================
+           FEED POST CARD
+           ======================================== */
+        .feed-post {
+            background: var(--bg-secondary);
+            margin: 8px 12px;
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.4s ease forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .post-header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+        }
+        .post-avatar {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 16px; color: var(--text-muted);
+        }
+        .post-user-info { flex: 1; min-width: 0; }
+        .post-username {
+            font-weight: 600; font-size: 14px; color: var(--text-primary);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .verified-badge {
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9px; color: #fff;
+        }
+        .post-time {
+            font-size: 11px; color: var(--text-muted); margin-top: 1px;
+        }
+        .post-menu-btn {
+            background: none; border: none;
+            color: var(--text-muted); cursor: pointer;
+            font-size: 20px; padding: 4px 8px; border-radius: 8px;
+            transition: all 0.15s ease;
+        }
+        .post-menu-btn:hover { background: var(--bg-hover); }
+        .post-content {
+            font-size: 14.5px; line-height: 1.6; color: var(--text-primary);
+            margin-bottom: 10px; word-break: break-word;
+        }
+        .post-media {
+            width: 100%; border-radius: 12px;
+            margin-bottom: 10px; object-fit: cover;
+            max-height: 400px; background: var(--bg-tertiary);
+        }
+        .post-media-placeholder {
+            width: 100%; height: 200px; border-radius: 12px;
+            background: var(--bg-tertiary);
+            margin-bottom: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 13px;
+        }
+        .post-actions {
+            display: flex; align-items: center;
+            justify-content: space-around;
+            padding: 8px 0 0;
+            border-top: 1px solid var(--border-subtle);
+            transition: border-color 0.4s ease;
+        }
+        .action-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: none; border: none;
+            color: var(--text-muted); cursor: pointer;
+            font-size: 13px; font-weight: 500;
+            padding: 8px 12px; border-radius: 10px;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .action-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .action-btn.spacced { color: var(--accent); }
+        .action-btn .action-icon { font-size: 18px; transition: transform 0.2s ease; }
+        .action-btn:active .action-icon { transform: scale(1.3); }
+
+        /* ========================================
+           BOTTOM NAVIGATION
+           ======================================== */
+        .bottom-nav {
+            flex-shrink: 0;
+            display: flex; align-items: center;
+            justify-content: space-around;
+            padding: 8px 8px 12px;
+            background: var(--bg-nav);
+            border-top: 1px solid var(--border-subtle);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10;
+            transition: all 0.4s ease;
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 3px; cursor: pointer;
+            padding: 6px 14px; border-radius: 12px;
+            transition: all 0.2s ease;
+            background: none; border: none;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            position: relative;
+        }
+        .nav-item.active { color: var(--accent); }
+        .nav-item .nav-icon { font-size: 22px; transition: transform 0.2s ease; }
+        .nav-item:active .nav-icon { transform: scale(0.85); }
+        .nav-item .nav-label { font-size: 10px; font-weight: 500; }
+        .nav-item .nav-badge {
+            position: absolute; top: -2px; right: 6px;
+            min-width: 18px; height: 18px;
+            border-radius: 9px;
+            background: var(--error);
+            color: #fff; font-size: 10px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0 5px;
+        }
+
+        /* ========================================
+           SETTINGS PANEL (Slide-up)
+           ======================================== */
+        .settings-overlay {
+            position: fixed; inset: 0; z-index: 100;
+            background: var(--overlay);
+            opacity: 0; visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .settings-overlay.active { opacity: 1; visibility: visible; }
+        .settings-panel {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            z-index: 101;
+            background: var(--bg-secondary);
+            border-radius: 24px 24px 0 0;
+            padding: 20px 20px 28px;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+            max-height: 70vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-subtle);
+            padding-bottom: max(28px, env(safe-area-inset-bottom));
+        }
+        .settings-panel.active { transform: translateY(0); }
+        .settings-handle {
+            width: 36px; height: 4px;
+            border-radius: 2px;
+            background: var(--border-subtle);
+            margin: 0 auto 18px;
+        }
+        .settings-title {
+            font-size: 18px; font-weight: 700; margin-bottom: 16px;
+        }
+        .setting-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: border-color 0.4s ease;
+        }
+        .setting-label { font-size: 14px; font-weight: 500; }
+        .setting-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .toggle-switch {
+            width: 50px; height: 28px;
+            border-radius: 14px;
+            background: var(--border-input);
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s ease;
+            flex-shrink: 0;
+        }
+        .toggle-switch.active { background: var(--accent); }
+        .toggle-switch::after {
+            content: '';
+            position: absolute; top: 3px; left: 3px;
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .toggle-switch.active::after { transform: translateX(22px); }
+        .accent-pills {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;
+        }
+        .accent-pill {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .accent-pill.active { border-color: var(--text-primary); transform: scale(1.1); }
+        .accent-pill.fire { background: linear-gradient(135deg, #ff6b35, #ffd166); }
+        .accent-pill.royal { background: linear-gradient(135deg, #6c3cff, #c4a0ff); }
+        .accent-pill.ocean { background: linear-gradient(135deg, #0ea5e9, #7dd3fc); }
+        .accent-pill.emerald { background: linear-gradient(135deg, #10b981, #6ee7b7); }
+        .accent-pill.rose { background: linear-gradient(135deg, #f43f5e, #fda4af); }
+
+        /* ========================================
+           TOAST
+           ======================================== */
+        .toast {
+            position: fixed; top: 20px; left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 13px; font-weight: 500;
+            z-index: 200;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-card);
+            white-space: nowrap;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* ========================================
+           CREATE POST MODAL
+           ======================================== */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 150;
+            background: var(--overlay);
+            display: flex; align-items: flex-end; justify-content: center;
+            opacity: 0; visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-card {
+            background: var(--bg-secondary);
+            border-radius: 24px 24px 0 0;
+            padding: 24px 20px 28px;
+            width: 100%; max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(40px);
+            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+            border: 1px solid var(--border-subtle);
+            padding-bottom: max(28px, env(safe-area-inset-bottom));
+        }
+        .modal-overlay.active .modal-card { transform: translateY(0); }
+        .modal-handle {
+            width: 36px; height: 4px;
+            border-radius: 2px;
+            background: var(--border-subtle);
+            margin: 0 auto 16px;
+        }
+        .modal-input {
+            width: 100%; min-height: 100px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-input);
+            border-radius: 14px;
+            padding: 14px; color: var(--text-primary);
+            font-size: 15px; font-family: 'Inter', sans-serif;
+            resize: none; outline: none;
+            transition: all 0.3s ease;
+        }
+        .modal-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .modal-actions {
+            display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+        }
+        .modal-action-chip {
+            padding: 8px 14px; border-radius: 20px;
+            background: var(--bg-input); border: 1px solid var(--border-input);
+            color: var(--text-secondary); font-size: 13px; cursor: pointer;
+            transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .modal-action-chip:hover { background: var(--bg-hover); border-color: var(--accent); }
+        .modal-post-btn {
+            width: 100%; padding: 14px; border-radius: 14px;
+            background: var(--brand-gradient);
+            color: #fff; font-size: 15px; font-weight: 600;
+            border: none; cursor: pointer; margin-top: 14px;
+            transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+        }
+        .modal-post-btn:active { transform: scale(0.97); }
+        .modal-post-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (min-width: 768px) {
+            body { max-width: 500px; margin: 0 auto; border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); }
+            .feed-post { margin: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ LAZY LOADER ============ -->
+    <div id="lazy-loader">
+        <div class="loader-spinner"></div>
+        <p class="loader-text">Loading SPACchat...</p>
+    </div>
+
+    <!-- ============ TOAST ============ -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ============ TOP HEADER ============ -->
+    <header class="header">
+        <div class="header-brand">
+            <div class="header-logo">S</div>
+            <span class="header-title">SPACchat</span>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn" onclick="openSettings()" title="Settings">⚙️</button>
+            <button class="icon-btn" onclick="showToast('Notifications coming soon')" title="Notifications">
+                🔔<span class="badge-dot"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="main-content" id="mainContent">
+
+        <!-- Stories Row -->
+        <div class="stories-row" id="storiesRow">
+            <div class="story-item" onclick="openCreatePost()">
+                <div class="story-ring my-story">
+                    <div class="story-avatar" id="myStoryAvatar">👤</div>
+                </div>
+                <span class="story-name">My Story</span>
+            </div>
+            <!-- More stories injected by JS -->
+        </div>
+
+        <!-- Create Post Bar -->
+        <div class="create-post-bar" onclick="openCreatePost()">
+            <div class="create-post-avatar" id="createPostAvatar">👤</div>
+            <div class="create-post-input">Proclaim something...</div>
+            <button class="create-post-btn" onclick="event.stopPropagation(); openCreatePost();">+</button>
+        </div>
+
+        <!-- Feed -->
+        <div id="feedContainer">
+            <!-- Posts injected by JS -->
+        </div>
+    </div>
+
+    <!-- ============ BOTTOM NAVIGATION ============ -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-tab="home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" data-tab="chat">
+            <span class="nav-icon">💬</span>
+            <span class="nav-label">Chat</span>
+            <span class="nav-badge">3</span>
+        </button>
+        <button class="nav-item" data-tab="media">
+            <span class="nav-icon">🎵</span>
+            <span class="nav-label">Media</span>
+        </button>
+        <button class="nav-item" data-tab="groups">
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Groups</span>
+        </button>
+        <button class="nav-item" data-tab="profile">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Profile</span>
+        </button>
+    </nav>
+
+    <!-- ============ SETTINGS PANEL ============ -->
+    <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-handle"></div>
+        <h3 class="settings-title">Appearance & Settings</h3>
+
+        <!-- Dark Mode -->
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">🌙 Dark Mode</div>
+                <div class="setting-desc">Toggle between light and dark themes</div>
+            </div>
+            <div class="toggle-switch active" id="darkModeToggle" onclick="toggleDarkMode()"></div>
+        </div>
+
+        <!-- Accent Color -->
+        <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+            <div>
+                <div class="setting-label">🎨 Accent Color</div>
+                <div class="setting-desc">Customize your SPACchat vibe</div>
+            </div>
+            <div class="accent-pills">
+                <div class="accent-pill fire active" data-accent="fire" onclick="setAccent('fire', this)"></div>
+                <div class="accent-pill royal" data-accent="royal" onclick="setAccent('royal', this)"></div>
+                <div class="accent-pill ocean" data-accent="ocean" onclick="setAccent('ocean', this)"></div>
+                <div class="accent-pill emerald" data-accent="emerald" onclick="setAccent('emerald', this)"></div>
+                <div class="accent-pill rose" data-accent="rose" onclick="setAccent('rose', this)"></div>
+            </div>
+        </div>
+
+        <!-- Logout -->
+        <div class="setting-row" style="border-bottom: none; padding-top: 8px;">
+            <button class="modal-post-btn" onclick="handleLogout()" style="background: var(--error); margin-top: 0;">
+                Log Out
+            </button>
+        </div>
+    </div>
+
+    <!-- ============ CREATE POST MODAL ============ -->
+    <div class="modal-overlay" id="postModalOverlay" onclick="closeCreatePost()"></div>
+    <div class="modal-card" id="postModalCard">
+        <div class="modal-handle"></div>
+        <textarea class="modal-input" id="postInput" placeholder="What's on your spirit?"></textarea>
+        <div class="modal-actions">
+            <button class="modal-action-chip">📷 Photo</button>
+            <button class="modal-action-chip">🎥 Video</button>
+            <button class="modal-action-chip">🎤 Voice</button>
+            <button class="modal-action-chip">📎 File</button>
+            <button class="modal-action-chip">📍 Location</button>
+        </div>
+        <button class="modal-post-btn" id="postSubmitBtn" onclick="submitPost()">
+            Proclaim 🔥
+        </button>
+    </div>
+
+    <!-- ============ SCRIPTS ============ -->
+    <script type="module">
+        // ──────────────────────────────────────
+        // FIREBASE + SUPABASE CONFIG
+        // ──────────────────────────────────────
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCo6bD1yB9SHG4Iem-MhniQ4YyOEQv-_YA",
+            authDomain: "spacchat-e35b8.firebaseapp.com",
+            projectId: "spacchat-e35b8",
+            storageBucket: "spacchat-e35b8.firebasestorage.app",
+            messagingSenderId: "407081887262",
+            appId: "1:407081887262:web:62879d6d38f6482982700f",
+            measurementId: "G-T7KFRFZH7H"
+        };
+
+        const SUPABASE_URL = "https://akbwcgzymrygsjpmwysm.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrYndjZ3p5bXJ5Z3NqcG13eXNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyOTE4MjUsImV4cCI6MjA5NDg2NzgyNX0.--2SPkyKOI2aWACgib6uPUFTzLvHlocPfdRZvUeLGI4";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // ──────────────────────────────────────
+        // GLOBAL STATE
+        // ──────────────────────────────────────
+        let currentUser = null;
+        let currentUserProfile = null;
+
+        // ──────────────────────────────────────
+        // EXPOSE TO GLOBAL SCOPE
+        // ──────────────────────────────────────
+        window.openSettings = openSettings;
+        window.closeSettings = closeSettings;
+        window.toggleDarkMode = toggleDarkMode;
+        window.setAccent = setAccent;
+        window.openCreatePost = openCreatePost;
+        window.closeCreatePost = closeCreatePost;
+        window.submitPost = submitPost;
+        window.handleLogout = handleLogout;
+        window.showToast = showToast;
+
+        // ──────────────────────────────────────
+        // LAZY LOADER
+        // ──────────────────────────────────────
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('lazy-loader').classList.add('hidden');
+            }, 1500);
+        });
+        setTimeout(() => {
+            document.getElementById('lazy-loader').classList.add('hidden');
+        }, 3500);
+
+        // ──────────────────────────────────────
+        // THEME MANAGEMENT
+        // ──────────────────────────────────────
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('spac_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const toggle = document.getElementById('darkModeToggle');
+            if (savedTheme === 'light') {
+                toggle.classList.remove('active');
+            } else {
+                toggle.classList.add('active');
+            }
+
+            const savedAccent = localStorage.getItem('spac_accent') || 'fire';
+            document.documentElement.setAttribute('data-accent', savedAccent);
+            document.querySelectorAll('.accent-pill').forEach(pill => {
+                pill.classList.toggle('active', pill.dataset.accent === savedAccent);
+            });
+        }
+
+        function toggleDarkMode() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('spac_theme', next);
+            document.getElementById('darkModeToggle').classList.toggle('active', next === 'dark');
+            showToast(next === 'dark' ? '🌙 Dark mode activated' : '☀️ Light mode activated');
+        }
+
+        function setAccent(accent, pillElement) {
+            document.documentElement.setAttribute('data-accent', accent);
+            localStorage.setItem('spac_accent', accent);
+            document.querySelectorAll('.accent-pill').forEach(p => p.classList.remove('active'));
+            pillElement.classList.add('active');
+            showToast(`🎨 ${accent.charAt(0).toUpperCase() + accent.slice(1)} accent applied`);
+        }
+
+        // ──────────────────────────────────────
+        // SETTINGS PANEL
+        // ──────────────────────────────────────
+        function openSettings() {
+            document.getElementById('settingsOverlay').classList.add('active');
+            document.getElementById('settingsPanel').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsOverlay').classList.remove('active');
+            document.getElementById('settingsPanel').classList.remove('active');
+        }
+
+        // ──────────────────────────────────────
+        // CREATE POST MODAL
+        // ──────────────────────────────────────
+        function openCreatePost() {
+            document.getElementById('postModalOverlay').classList.add('active');
+            document.getElementById('postModalCard').classList.add('active');
+            document.getElementById('postInput').focus();
+        }
+
+        function closeCreatePost() {
+            document.getElementById('postModalOverlay').classList.remove('active');
+            document.getElementById('postModalCard').classList.remove('active');
+            document.getElementById('postInput').value = '';
+        }
+
+        async function submitPost() {
+            const content = document.getElementById('postInput').value.trim();
+            if (!content || !currentUser) {
+                showToast('Please write something first');
+                return;
+            }
+
+            const btn = document.getElementById('postSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Proclaiming...';
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        user_id: currentUser.uid,
+                        content: content,
+                        post_type: 'text',
+                        post_status: 'published',
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to post');
+
+                showToast('Proclaimed! 🔥');
+                closeCreatePost();
+                loadFeed(); // Refresh feed
+            } catch (error) {
+                console.error('Post error:', error);
+                showToast('Failed to post. Try again.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Proclaim 🔥';
+            }
+        }
+
+        // ──────────────────────────────────────
+        // TOAST
+        // ──────────────────────────────────────
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // ──────────────────────────────────────
+        // FEED LOADING
+        // ──────────────────────────────────────
+        async function loadFeed() {
+            const feedContainer = document.getElementById('feedContainer');
+            feedContainer.innerHTML = '';
+
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/posts?select=*&post_status=eq.published&order=created_at.desc&limit=20`, {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    });
+
+                if (!response.ok) throw new Error('Failed to load feed');
+
+                const posts = await response.json();
+
+                if (posts.length === 0) {
+                    feedContainer.innerHTML = `
+                                <div style="text-align:center;padding:40px 20px;color:var(--text-muted);">
+                                    <div style="font-size:48px;margin-bottom:12px;">🕊️</div>
+                                    <p style="font-size:15px;font-weight:500;">No proclamations yet</p>
+                                    <p style="font-size:13px;margin-top:4px;">Be the first to proclaim something!</p>
+                                </div>`;
+                    return;
+                }
+
+                posts.forEach((post, index) => {
+                    const postEl = createPostElement(post, index);
+                    feedContainer.appendChild(postEl);
+                });
+            } catch (error) {
+                console.error('Feed error:', error);
+                feedContainer.innerHTML = `
+                            <div style="text-align:center;padding:40px 20px;color:var(--error);">
+                                <p>Failed to load feed. Pull to refresh.</p>
+                            </div>`;
+            }
+        }
+
+        function createPostElement(post, index) {
+            const div = document.createElement('div');
+            div.className = 'feed-post';
+            div.style.animationDelay = `${index * 0.06}s`;
+            div.setAttribute('data-post-id', post.id);
+
+            const timeAgo = getTimeAgo(new Date(post.created_at));
+            const initials = (post.user_id || 'U').substring(0, 2).toUpperCase();
+
+            div.innerHTML = `
+                        <div class="post-header">
+                            <div class="post-avatar">${initials}</div>
+                            <div class="post-user-info">
+                                <div class="post-username">
+                                    @${post.user_id?.substring(0, 8) || 'user'}
+                                    <span class="verified-badge">✓</span>
+                                </div>
+                                <div class="post-time">${timeAgo}</div>
+                            </div>
+                            <button class="post-menu-btn" onclick="showToast('Options coming soon')">⋯</button>
+                        </div>
+                        <div class="post-content">${escapeHtml(post.content || '')}</div>
+                        ${post.media_urls && post.media_urls.length > 0 ? 
+                            `<div class="post-media-placeholder">📷 Media attached</div>` : ''}
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="handleSpac(this, '${post.id}')">
+                                <span class="action-icon">🔥</span> SPAC <span class="count">${post.spac_count || 0}</span>
+                            </button>
+                            <button class="action-btn" onclick="showToast('Contributions coming soon')">
+                                <span class="action-icon">💬</span> Contribution <span class="count">${post.contribution_count || 0}</span>
+                            </button>
+                            <button class="action-btn" onclick="handleReproclaim('${post.id}')">
+                                <span class="action-icon">🔄</span> Reproclaim <span class="count">${post.reproclaim_count || 0}</span>
+                            </button>
+                            <button class="action-btn" onclick="handleSpread('${post.id}')">
+                                <span class="action-icon">📤</span> Spread
+                            </button>
+                        </div>`;
+
+            return div;
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            return `${Math.floor(seconds / 86400)}d ago`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ──────────────────────────────────────
+        // POST ACTIONS
+        // ──────────────────────────────────────
+        window.handleSpac = async function(btn, postId) {
+            if (!currentUser) return;
+            btn.classList.toggle('spacced');
+            const countEl = btn.querySelector('.count');
+            const currentCount = parseInt(countEl.textContent) || 0;
+            const isSpacced = btn.classList.contains('spacced');
+            countEl.textContent = isSpacced ? currentCount + 1 : Math.max(0, currentCount - 1);
+
+            // Animate
+            const icon = btn.querySelector('.action-icon');
+            icon.style.transform = 'scale(1.4)';
+            setTimeout(() => icon.style.transform = 'scale(1)', 200);
+
+            try {
+                if (isSpacced) {
+                    await fetch(`${SUPABASE_URL}/rest/v1/reactions`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Prefer': 'return=minimal'
+                        },
+                        body: JSON.stringify({
+                            post_id: postId,
+                            user_id: currentUser.uid,
+                            reaction_type: 'spac',
+                            created_at: new Date().toISOString()
+                        })
+                    });
+                }
+            } catch (error) {
+                console.error('Reaction error:', error);
+            }
+        };
+
+        window.handleReproclaim = function(postId) {
+            showToast('Reproclaimed! 🔄');
+        };
+
+        window.handleSpread = function(postId) {
+            showToast('Spread to your network! 📤');
+        };
+
+        // ──────────────────────────────────────
+        // AUTH & USER
+        // ──────────────────────────────────────
+        async function loadUserProfile(uid) {
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/users?id=eq.${uid}&limit=1`, {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    });
+                if (response.ok) {
+                    const users = await response.json();
+                    if (users.length > 0) {
+                        currentUserProfile = users[0];
+                        updateUIWithProfile();
+                    }
+                }
+            } catch (error) {
+                console.warn('Profile fetch warning:', error);
+            }
+        }
+
+        function updateUIWithProfile() {
+            if (!currentUserProfile) return;
+            const initials = (currentUserProfile.full_name || currentUserProfile.email || 'U')
+                .substring(0, 2).toUpperCase();
+            const avatarEls = document.querySelectorAll('#myStoryAvatar, #createPostAvatar');
+            avatarEls.forEach(el => { el.textContent = initials; });
+        }
+
+        async function handleLogout() {
+            try {
+                await signOut(auth);
+                window.location.href = '/index.html';
+            } catch (error) {
+                showToast('Failed to log out');
+            }
+        }
+
+        // ──────────────────────────────────────
+        // BOTTOM NAV
+        // ──────────────────────────────────────
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove(
+                    'active'));
+                this.classList.add('active');
+                const tab = this.dataset.tab;
+                if (tab === 'home') showToast('You are home 🏠');
+                if (tab === 'chat') showToast('Chat coming soon 💬');
+                if (tab === 'media') showToast('Media coming soon 🎵');
+                if (tab === 'groups') showToast('Groups coming soon 👥');
+                if (tab === 'profile') showToast('Profile coming soon 👤');
+            });
+        });
+
+        // ──────────────────────────────────────
+        // PULL TO REFRESH (Basic)
+        // ──────────────────────────────────────
+        let touchStartY = 0;
+        const mainContent = document.getElementById('mainContent');
+        mainContent.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        mainContent.addEventListener('touchmove', (e) => {
+            if (mainContent.scrollTop === 0 && e.touches[0].clientY - touchStartY > 60) {
+                loadFeed();
+                showToast('Refreshed 🔄');
+            }
+        }, { passive: true });
+
+        // ──────────────────────────────────────
+        // INIT
+        // ──────────────────────────────────────
+        loadTheme();
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadUserProfile(user.uid);
+                loadFeed();
+                // Load stories (placeholder)
+                loadStoriesPlaceholder();
+            } else {
+                window.location.href = '/index.html';
+            }
+        });
+
+        function loadStoriesPlaceholder() {
+            const storiesRow = document.getElementById('storiesRow');
+            const storyUsers = [
+                { name: 'Pst. John', viewed: false },
+                { name: 'Choir Lead', viewed: true },
+                { name: 'Youth Min.', viewed: false },
+                { name: 'Sis. Grace', viewed: true },
+                { name: 'Bro. David', viewed: false },
+                { name: 'Prayer Team', viewed: false },
+            ];
+            storyUsers.forEach(user => {
+                const storyItem = document.createElement('div');
+                storyItem.className = 'story-item';
+                storyItem.innerHTML = `
+                            <div class="story-ring ${user.viewed ? 'viewed' : ''}">
+                                <div class="story-avatar">${user.name.substring(0,2).toUpperCase()}</div>
+                            </div>
+                            <span class="story-name">${user.name}</span>`;
+                storyItem.onclick = () => showToast(`${user.name}'s story coming soon`);
+                storiesRow.appendChild(storyItem);
+            });
+        }
+
+        // ──────────────────────────────────────
+        // KEYBOARD SHORTCUTS
+        // ──────────────────────────────────────
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSettings();
+                closeCreatePost();
+            }
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                openCreatePost();
+            }
+        });
+
+        console.log('%c🔥 SPACchat Home Ready %c| %cConnect in the Spirit',
+            'color: var(--accent); font-weight: bold; font-size: 16px;',
+            '', 'color: var(--accent-gold);');
+    </script>
+</body>
+</html>
