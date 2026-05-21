@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <title>SPACchat — Groups</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --p: #5B3C88; --pl: #7B5CA8; --pg: rgba(91,60,136,0.2);
+            --s: #FF7A59; --sg: rgba(255,122,89,0.25);
+            --bg: #F7F3EC; --bg2: #EDE8DF; --c: #FFFFFF;
+            --t: #2E2E2E; --t2: #5A5560; --tm: #8B8690;
+            --a: #2BB3C0; --ok: #2EAD67; --err: #E74C3C;
+            --b: #E0DCD5; --r: 10px; --rm: 14px; --rl: 20px;
+            --sh: 0 2px 8px rgba(0,0,0,0.05); --sh2: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        [data-theme="dark"] {
+            --bg: #1A1625; --bg2: #211D30; --c: #282238;
+            --t: #F0EDF5; --t2: #B8B2C4; --tm: #7B7590; --b: #3A3450;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{height:100%;-webkit-tap-highlight-color:transparent}
+        body{
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            background:var(--bg);color:var(--t);height:100vh;height:100dvh;
+            overflow:hidden;-webkit-font-smoothing:antialiased;
+            display:flex;flex-direction:column;
+            transition:background .4s,color .4s;
+        }
+
+        #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s,visibility .5s}
+        #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .spinner{width:40px;height:40px;border-radius:50%;border:3px solid var(--b);border-top-color:var(--p);animation:spin .7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loader-t{color:var(--tm);font-size:13px;font-weight:500}
+
+        .header{flex-shrink:0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--p);color:#fff;z-index:10}
+        .hl{display:flex;align-items:center;gap:10px}
+        .hlogo{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff}
+        .htitle{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:#fff}
+        .hr{display:flex;align-items:center;gap:4px}
+        .hbtn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.15);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:.2s}
+        .hbtn:hover{background:rgba(255,255,255,.25)}
+
+        .main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+        .main::-webkit-scrollbar{width:0}
+
+        .section-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px}
+        .section-title{font-size:15px;font-weight:700;color:var(--t)}
+        .section-action{font-size:12px;color:var(--p);font-weight:600;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif}
+
+        .group-card{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c);margin:4px 12px;border-radius:var(--rm);border:1px solid var(--b);cursor:pointer;transition:.2s;box-shadow:var(--sh)}
+        .group-card:hover{background:var(--bg)}
+        .group-av{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--p),var(--s));color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;flex-shrink:0}
+        .group-info{flex:1;min-width:0}
+        .group-name{font-weight:600;font-size:14px;color:var(--t)}
+        .group-meta{font-size:11px;color:var(--tm);margin-top:2px;display:flex;align-items:center;gap:8px}
+        .group-badge{padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600;display:inline-flex;align-items:center;gap:3px}
+        .group-badge.member{background:rgba(43,179,192,.15);color:var(--a)}
+        .group-badge.admin{background:rgba(255,122,89,.15);color:var(--s)}
+        .group-arrow{color:var(--tm);font-size:16px}
+
+        .empty{text-align:center;padding:40px 20px;color:var(--tm)}
+        .empty-icon{font-size:44px;margin-bottom:8px}
+        .empty-title{font-size:14px;font-weight:600;color:var(--t2)}
+        .empty-desc{font-size:11px;margin-top:3px}
+
+        .modal-overlay{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:.3s}
+        .modal-overlay.on{opacity:1;visibility:visible}
+        .modal-sheet{background:var(--c);border-radius:var(--rl) var(--rl) 0 0;padding:20px 18px 24px;width:100%;max-width:500px;max-height:75vh;overflow-y:auto;transform:translateY(40px);transition:transform .35s cubic-bezier(.32,.72,0,1);border:1px solid var(--b);padding-bottom:max(24px,env(safe-area-inset-bottom))}
+        .modal-overlay.on .modal-sheet{transform:translateY(0)}
+        .mhandle{width:32px;height:4px;border-radius:2px;background:var(--b);margin:0 auto 12px}
+        .mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+        .mtitle{font-size:16px;font-weight:700}
+        .mclose{width:28px;height:28px;border-radius:50%;background:var(--bg2);border:none;color:var(--t2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+        .mclose:hover{background:var(--err);color:#fff}
+        .fgroup{margin-bottom:14px}
+        .flabel{display:block;font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+        .finput,.ftextarea{width:100%;padding:10px 12px;border-radius:var(--r);background:var(--bg);border:1.5px solid var(--b);color:var(--t);font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:.3s;resize:vertical}
+        .finput:focus,.ftextarea:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--pg)}
+        .ftextarea{min-height:60px}
+        .mbtn{width:100%;padding:12px;border-radius:var(--r);background:var(--p);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:.2s;margin-top:4px}
+        .mbtn:hover{background:var(--pl)}
+        .mbtn:disabled{opacity:.5;cursor:not-allowed}
+        .mbtn.outline{background:transparent;border:1.5px solid var(--p);color:var(--p)}
+        .mbtn.outline:hover{background:var(--pg)}
+        .mbtn.danger{background:var(--err)}
+        .mbtn.danger:hover{background:#c0392b}
+
+        .member-list{margin-top:8px}
+        .member-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--b)}
+        .member-av{width:36px;height:36px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+        .member-info{flex:1}
+        .member-name{font-weight:600;font-size:13px;color:var(--t)}
+        .member-role{font-size:10px;color:var(--tm)}
+
+        .group-feed-post{background:var(--c);margin:6px 12px;border-radius:var(--rm);padding:12px 14px;border:1px solid var(--b);box-shadow:var(--sh)}
+        .gfp-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+        .gfp-av{width:32px;height:32px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+        .gfp-name{font-weight:600;font-size:12px;color:var(--t)}
+        .gfp-time{font-size:10px;color:var(--tm)}
+        .gfp-body{font-size:13px;color:var(--t);line-height:1.5;margin-bottom:4px}
+
+        .nav{flex-shrink:0;display:flex;align-items:center;justify-content:space-around;padding:6px 6px 10px;background:var(--c);border-top:1px solid var(--b);z-index:10;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+        .nav-item{display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;padding:5px 8px;border-radius:10px;transition:.2s;background:none;border:none;color:var(--tm);font-family:'Inter',sans-serif;text-decoration:none}
+        .nav-item.act{color:var(--p)}
+        .nav-icon{font-size:19px}
+        .nav-label{font-size:9px;font-weight:500}
+
+        .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-140px);padding:10px 18px;border-radius:var(--r);font-size:12px;font-weight:600;z-index:300;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);box-shadow:var(--sh2);white-space:nowrap;background:var(--ok);color:#fff}
+        .toast.err{background:var(--err)}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+
+        @media(min-width:768px){body{max-width:500px;margin:0 auto;border-left:1px solid var(--b);border-right:1px solid var(--b)}}
+    </style>
+</head>
+<body>
+
+<div id="loader"><div class="spinner"></div><p class="loader-t">Loading groups...</p></div>
+<div class="toast" id="toast"></div>
+
+<header class="header">
+    <div class="hl"><div class="hlogo">S</div><span class="htitle">SPACchat</span></div>
+    <div class="hr">
+        <button class="hbtn" onclick="location.href='profile.html'" title="Profile"><span id="headerAv">👤</span></button>
+    </div>
+</header>
+
+<div class="main" id="mainContent">
+    <div class="section-header">
+        <span class="section-title">👥 Ministry Groups</span>
+        <button class="section-action" id="createGroupBtn">+ Create</button>
+    </div>
+    <div id="groupsList"></div>
+
+    <div class="section-header" style="margin-top:8px">
+        <span class="section-title">💬 My Conversations</span>
+    </div>
+    <div id="conversationsList"></div>
+</div>
+
+<nav class="nav">
+    <button class="nav-item" onclick="location.href='home.html'"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+    <button class="nav-item" onclick="location.href='chat.html'"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+    <button class="nav-item" onclick="location.href='media.html'"><span class="nav-icon">🎵</span><span class="nav-label">Media</span></button>
+    <button class="nav-item act"><span class="nav-icon">👥</span><span class="nav-label">Groups</span></button>
+    <button class="nav-item" onclick="location.href='profile.html'"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
+</nav>
+
+<!-- CREATE GROUP MODAL -->
+<div class="modal-overlay" id="createModal">
+    <div class="modal-sheet">
+        <div class="mhandle"></div>
+        <div class="mhdr"><span class="mtitle">Create Group</span><button class="mclose" id="closeCreateModal">✕</button></div>
+        <div class="fgroup"><label class="flabel">Group Name</label><input type="text" class="finput" id="groupName" placeholder="e.g. Youth Ministry, Choir, Prayer Team"></div>
+        <div class="fgroup"><label class="flabel">Description</label><textarea class="ftextarea" id="groupDesc" placeholder="What is this group about?"></textarea></div>
+        <div class="fgroup"><label class="flabel">Group Type</label>
+            <select class="finput" id="groupType" style="appearance:auto">
+                <option value="ministry">Ministry</option>
+                <option value="fellowship">Fellowship</option>
+                <option value="prayer">Prayer Group</option>
+                <option value="study">Bible Study</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <button class="mbtn" id="submitGroup">Create Group</button>
+    </div>
+</div>
+
+<!-- GROUP DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+    <div class="modal-sheet">
+        <div class="mhandle"></div>
+        <div class="mhdr"><span class="mtitle" id="detailTitle">Group</span><button class="mclose" id="closeDetailModal">✕</button></div>
+        <div id="detailContent"></div>
+        <div class="member-list" id="memberList"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="mbtn" id="joinGroupBtn">Join Group</button>
+            <button class="mbtn outline" id="leaveGroupBtn" style="display:none">Leave</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyCo6bD1yB9SHG4Iem-MhniQ4YyOEQv-_YA",authDomain:"spacchat-e35b8.firebaseapp.com",projectId:"spacchat-e35b8",storageBucket:"spacchat-e35b8.firebasestorage.app",messagingSenderId:"407081887262",appId:"1:407081887262:web:62879d6d38f6482982700f"};
+const SU="https://akbwcgzymrygsjpmwysm.supabase.co";
+const SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrYndjZ3p5bXJ5Z3NqcG13eXNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyOTE4MjUsImV4cCI6MjA5NDg2NzgyNX0.--2SPkyKOI2aWACgib6uPUFTzLvHlocPfdRZvUeLGI4";
+
+const app=initializeApp(FC);
+const auth=getAuth(app);
+
+let cu=null,cp=null,allGroups=[],myGroups=[],activeGroupId=null;
+
+const $=id=>document.getElementById(id);
+const T=(m,e)=>{const t=$('toast');t.textContent=m;t.className='toast'+(e?' err':'');t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500)};
+const ini=n=>{if(!n)return'??';const p=n.trim().split(/\s+/);return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():n.substring(0,2).toUpperCase()};
+const suF=async p=>{const r=await fetch(`${SU}${p}`,{headers:{'apikey':SK,'Authorization':`Bearer ${SK}`}});if(!r.ok)throw new Error('Fail');return r.json()};
+
+function loadTheme(){const t=localStorage.getItem('spac_theme')||'light';document.documentElement.setAttribute('data-theme',t)}
+loadTheme();
+
+// PROFILE
+async function getProfile(uid){try{const u=await suF(`/rest/v1/users?id=eq.${uid}&limit=1`);return u[0]||null}catch(e){return null}}
+
+// LOAD GROUPS (from conversations table with type=group)
+async function loadGroups(){
+    try{
+        const groups=await suF('/rest/v1/conversations?type=eq.group&is_deleted=eq.false&order=created_at.desc&limit=30');
+        allGroups=groups;
+        if(cu){
+            const memberships=await suF(`/rest/v1/conversation_participants?user_id=eq.${cu.uid}&select=conversation_id`);
+            const myIds=new Set(memberships.map(m=>m.conversation_id));
+            myGroups=groups.filter(g=>myIds.has(g.id));
+        }
+        renderGroups();
+        renderConversations();
+    }catch(e){
+        console.warn('Groups load error:',e);
+        allGroups=[];myGroups=[];
+        renderGroups();
+        renderConversations();
+    }
+}
+
+function renderGroups(){
+    const container=$('groupsList');
+    if(!allGroups.length){
+        container.innerHTML='<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">No groups yet</div><div class="empty-desc">Create the first ministry group!</div></div>';
+        return;
+    }
+    container.innerHTML=allGroups.map(g=>{
+        const isMember=myGroups.some(mg=>mg.id===g.id);
+        const isAdmin=g.created_by===cu?.uid;
+        return`
+        <div class="group-card" data-gid="${g.id}">
+            <div class="group-av">${ini(g.name||'Group')}</div>
+            <div class="group-info">
+                <div class="group-name">${g.name||'Unnamed Group'}</div>
+                <div class="group-meta">
+                    <span>${g.participant_count||0} members</span>
+                    ${isMember?'<span class="group-badge member">✓ Joined</span>':''}
+                    ${isAdmin?'<span class="group-badge admin">Admin</span>':''}
+                </div>
+            </div>
+            <span class="group-arrow">›</span>
+        </div>`;
+    }).join('');
+
+    // Click handlers
+    container.querySelectorAll('.group-card').forEach(card=>{
+        card.addEventListener('click',()=>openGroupDetail(card.dataset.gid));
+    });
+}
+
+function renderConversations(){
+    const container=$('conversationsList');
+    if(!myGroups.length){
+        container.innerHTML='<div class="empty"><div class="empty-icon">💬</div><div class="empty-title">Not in any groups yet</div><div class="empty-desc">Join a ministry group to start chatting</div></div>';
+        return;
+    }
+    container.innerHTML=myGroups.map(g=>`
+    <div class="group-card" data-gid="${g.id}">
+        <div class="group-av">${ini(g.name||'Group')}</div>
+        <div class="group-info">
+            <div class="group-name">${g.name||'Unnamed Group'}</div>
+            <div class="group-meta">${g.last_message?g.last_message.substring(0,40)+'...':'No messages yet'}</div>
+        </div>
+        <span class="group-arrow">›</span>
+    </div>`).join('');
+    container.querySelectorAll('.group-card').forEach(card=>{
+        card.addEventListener('click',()=>openGroupDetail(card.dataset.gid));
+    });
+}
+
+// GROUP DETAIL
+async function openGroupDetail(gid){
+    activeGroupId=gid;
+    const group=allGroups.find(g=>g.id===gid);
+    if(!group)return;
+    $('detailTitle').textContent=group.name||'Group';
+    $('detailContent').innerHTML=`<p style="color:var(--t2);font-size:13px;margin-bottom:8px;">${group.group_description||'No description'}</p><p style="font-size:11px;color:var(--tm);">${group.participant_count||0} members • Created ${new Date(group.created_at).toLocaleDateString()}</p>`;
+    $('detailModal').classList.add('on');
+
+    // Check membership
+    const isMember=myGroups.some(mg=>mg.id===gid);
+    $('joinGroupBtn').style.display=isMember?'none':'block';
+    $('leaveGroupBtn').style.display=isMember?'block':'none';
+
+    // Load members
+    try{
+        const members=await suF(`/rest/v1/conversation_participants?conversation_id=eq.${gid}&select=user_id,role,joined_at&limit=30`);
+        const uids=members.map(m=>m.user_id);
+        const um={};
+        for(const uid of uids){um[uid]=await getProfile(uid)}
+        $('memberList').innerHTML='<p style="font-weight:600;font-size:13px;margin-bottom:6px;">Members</p>'+members.map(m=>{
+            const p=um[m.user_id];const nm=p?.full_name||p?.username||m.user_id?.substring(0,8)||'User';
+            return`<div class="member-item"><div class="member-av">${ini(nm)}</div><div class="member-info"><div class="member-name">${nm}</div><div class="member-role">${m.role||'member'} • Joined ${new Date(m.joined_at).toLocaleDateString()}</div></div></div>`;
+        }).join('');
+    }catch(e){$('memberList').innerHTML=''}
+}
+
+// JOIN / LEAVE
+$('joinGroupBtn').addEventListener('click',async()=>{
+    if(!cu||!activeGroupId)return;
+    try{
+        await fetch(`${SU}/rest/v1/conversation_participants`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=minimal'},body:JSON.stringify({conversation_id:activeGroupId,user_id:cu.uid,role:'member',joined_at:new Date().toISOString()})});
+        T('Joined group! 👥');$('joinGroupBtn').style.display='none';$('leaveGroupBtn').style.display='block';
+        loadGroups();
+    }catch(e){T('Failed to join',1)}
+});
+$('leaveGroupBtn').addEventListener('click',async()=>{
+    if(!cu||!activeGroupId)return;
+    try{
+        await fetch(`${SU}/rest/v1/conversation_participants?conversation_id=eq.${activeGroupId}&user_id=eq.${cu.uid}`,{method:'DELETE',headers:{'apikey':SK,'Authorization':`Bearer ${SK}`}});
+        T('Left group');$('joinGroupBtn').style.display='block';$('leaveGroupBtn').style.display='none';
+        loadGroups();
+    }catch(e){T('Failed to leave',1)}
+});
+$('closeDetailModal').addEventListener('click',()=>$('detailModal').classList.remove('on'));
+$('detailModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')});
+
+// CREATE GROUP
+$('createGroupBtn').addEventListener('click',()=>{$('createModal').classList.add('on')});
+$('closeCreateModal').addEventListener('click',()=>$('createModal').classList.remove('on'));
+$('createModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')});
+$('submitGroup').addEventListener('click',async()=>{
+    const name=$('groupName').value.trim();const desc=$('groupDesc').value.trim();
+    if(!name)return T('Enter a group name',1);
+    if(!cu)return T('Sign in first',1);
+    const btn=$('submitGroup');btn.disabled=true;btn.textContent='Creating...';
+    const now=new Date().toISOString();
+    try{
+        const res=await fetch(`${SU}/rest/v1/conversations`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=representation'},body:JSON.stringify({type:'group',name,group_description:desc,created_by:cu.uid,created_at:now,updated_at:now})});
+        const groups=await res.json();
+        if(groups&&groups.length>0){
+            await fetch(`${SU}/rest/v1/conversation_participants`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=minimal'},body:JSON.stringify({conversation_id:groups[0].id,user_id:cu.uid,role:'owner',joined_at:now})});
+        }
+        $('createModal').classList.remove('on');$('groupName').value='';$('groupDesc').value='';
+        T('Group created! 🎉');loadGroups();
+    }catch(e){T('Failed to create group',1)}finally{btn.disabled=false;btn.textContent='Create Group'}
+});
+
+// INIT
+window.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>$('loader').classList.add('hidden'),1000)});
+setTimeout(()=>$('loader').classList.add('hidden'),2500);
+
+onAuthStateChanged(auth,async(user)=>{
+    if(!user){location.href='index.html';return}
+    cu=user;cp=await getProfile(user.uid);
+    if(cp){$('headerAv').textContent=ini(cp.full_name||cp.username||'User')}
+    loadGroups();
+});
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('createModal').classList.remove('on');$('detailModal').classList.remove('on')}});
+</script>
+</body>
+</html>
