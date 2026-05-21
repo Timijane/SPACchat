@@ -3,534 +3,2904 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="SPACchat - Spiritual Social Platform">
+    <meta name="theme-color" content="#5B3C88">
     <title>SPACchat — Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    
     <style>
+        /* ============ CSS Custom Properties ============ */
         :root {
-            --p: #5B3C88; --pl: #7B5CA8; --pg: rgba(91,60,136,0.2);
-            --s: #FF7A59; --sg: rgba(255,122,89,0.25);
-            --bg: #F7F3EC; --bg2: #EDE8DF; --c: #FFFFFF;
-            --t: #2E2E2E; --t2: #5A5560; --tm: #8B8690;
-            --a: #2BB3C0; --ok: #2EAD67; --err: #E74C3C;
-            --b: #E0DCD5; --r: 10px; --rm: 14px; --rl: 20px;
-            --sh: 0 2px 8px rgba(0,0,0,0.05); --sh2: 0 8px 32px rgba(0,0,0,0.1);
+            --p: #5B3C88;
+            --pl: #7B5CA8;
+            --pd: #46306A;
+            --pg: rgba(91, 60, 136, 0.2);
+            --s: #FF7A59;
+            --sg: rgba(255, 122, 89, 0.25);
+            --bg: #F7F3EC;
+            --bg2: #EDE8DF;
+            --c: #FFFFFF;
+            --t: #2E2E2E;
+            --t2: #5A5560;
+            --tm: #8B8690;
+            --a: #2BB3C0;
+            --ok: #2EAD67;
+            --err: #E74C3C;
+            --b: #E0DCD5;
+            --r: 10px;
+            --rm: 14px;
+            --rl: 20px;
+            --sh: 0 2px 8px rgba(0,0,0,0.05);
+            --sh2: 0 8px 32px rgba(0,0,0,0.1);
+            --tr: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Accessibility */
+            --focus-ring: 0 0 0 3px rgba(91, 60, 136, 0.4);
+            --focus-visible: 0 0 0 3px var(--p);
         }
+
         [data-theme="dark"] {
-            --bg: #1A1625; --bg2: #211D30; --c: #282238;
-            --t: #F0EDF5; --t2: #B8B2C4; --tm: #7B7590; --b: #3A3450;
+            --bg: #1A1625;
+            --bg2: #211D30;
+            --c: #282238;
+            --t: #F0EDF5;
+            --t2: #B8B2C4;
+            --tm: #7B7590;
+            --b: #3A3450;
+            --sh: 0 2px 8px rgba(0,0,0,0.2);
+            --sh2: 0 8px 32px rgba(0,0,0,0.4);
         }
-        *{margin:0;padding:0;box-sizing:border-box}
-        html{height:100%;-webkit-tap-highlight-color:transparent}
-        body{
-            font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-            background:var(--bg);color:var(--t);height:100vh;height:100dvh;
-            overflow:hidden;-webkit-font-smoothing:antialiased;
-            display:flex;flex-direction:column;
-            transition:background .4s,color .4s;
+
+        /* ============ Reset & Base ============ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s,visibility .5s}
-        #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-        .spinner{width:44px;height:44px;border-radius:50%;border:3px solid var(--b);border-top-color:var(--p);animation:spin .8s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .loader-t{color:var(--tm);font-size:13px;font-weight:500}
 
-        .header{flex-shrink:0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--p);color:#fff;z-index:10}
-        .hl{display:flex;align-items:center;gap:10px}
-        .hlogo{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff}
-        .htitle{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:#fff}
-        .hr{display:flex;align-items:center;gap:4px}
-        .hbtn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.15);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:.2s;position:relative}
-        .hbtn:hover{background:rgba(255,255,255,.25)}
-        .badge{position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:var(--s);border:2px solid var(--p);display:none}
-        .badge.on{display:block}
+        html {
+            height: 100%;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
 
-        .main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-        .main::-webkit-scrollbar{width:0}
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--t);
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            transition: background var(--tr), color var(--tr);
+            line-height: 1.5;
+        }
 
-        .stories-wrap{padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--b)}
-        .stories-row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory}
-        .stories-row::-webkit-scrollbar{height:0}
-        .si{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;cursor:pointer;scroll-snap-align:start;background:none;border:none;font-family:'Inter',sans-serif;transition:transform .15s}
-        .si:active{transform:scale(.93)}
-        .sr{width:56px;height:56px;border-radius:50%;padding:2px;background:linear-gradient(135deg,#5B3C88,#FF7A59,#2BB3C0);display:flex;align-items:center;justify-content:center}
-        .sr.mine{background:var(--b);position:relative}
-        .sr.mine::after{content:'+';position:absolute;bottom:-1px;right:-1px;width:20px;height:20px;border-radius:50%;background:var(--p);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
-        .sr.viewed{background:var(--b)}
-        .sa{width:48px;height:48px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;object-fit:cover;border:2px solid var(--c)}
-        .sn{font-size:10px;color:var(--t2);max-width:58px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+        /* Focus styles for accessibility */
+        :focus-visible {
+            outline: 2px solid var(--p);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
 
-        .create-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--bg)}
-        .ca{width:38px;height:38px;border-radius:50%;background:var(--p);color:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
-        .ci{flex:1;padding:10px 16px;border-radius:22px;background:var(--c);border:1.5px solid var(--b);color:var(--tm);font-size:14px;font-family:'Inter',sans-serif;cursor:pointer;text-align:left;transition:.3s}
-        .ci:hover{border-color:var(--p)}
-        .cp{width:38px;height:38px;border-radius:50%;background:var(--s);border:none;color:#fff;font-size:22px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s}
-        .cp:active{transform:scale(.88)}
+        button:focus:not(:focus-visible) {
+            outline: none;
+        }
 
-        .post{background:var(--c);margin:8px 12px;border-radius:var(--rm);padding:12px 14px;border:1px solid var(--b);box-shadow:var(--sh);animation:fi .35s forwards;opacity:0;transition:background .3s,border-color .3s}
-        @keyframes fi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-        .ph{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-        .pa{width:38px;height:38px;border-radius:50%;background:var(--p);color:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
-        .pi{flex:1;min-width:0}
-        .pn{font-weight:600;font-size:13px;color:var(--t);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
-        .pt{font-size:10px;color:var(--tm)}
-        .rb{font-size:10px;color:var(--a);font-weight:500;display:inline-flex;align-items:center;gap:3px}
-        .pb{font-size:14px;line-height:1.5;color:var(--t);margin-bottom:6px;word-break:break-word;position:relative}
-        .pb.trunc{max-height:80px;overflow:hidden}
-        .pb.trunc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,var(--c))}
-        .rml{color:var(--a);font-size:12px;font-weight:600;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;display:block;margin:4px 0}
-        .pimgs{display:grid;gap:3px;margin-bottom:6px}
-        .pimgs.g1{grid-template-columns:1fr}
-        .pimgs.g2{grid-template-columns:1fr 1fr}
-        .pimgs.g3{grid-template-columns:1fr 1fr}
-        .pimgs.g3 img:first-child{grid-row:span 2}
-        .pimgs.g4{grid-template-columns:1fr 1fr}
-        .pimg{width:100%;border-radius:var(--r);object-fit:cover;cursor:pointer;max-height:300px;background:var(--bg2)}
-        .pvoice{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border-radius:var(--r);margin-bottom:6px;cursor:pointer}
-        .pvoice audio{width:100%;height:32px}
-        .pacts{display:flex;align-items:center;justify-content:space-between;padding:6px 0 0;border-top:1px solid var(--b);gap:0;flex-wrap:nowrap}
-        .pact{display:flex;align-items:center;gap:2px;background:none;border:none;color:var(--tm);cursor:pointer;font-size:11px;font-weight:500;padding:5px 6px;border-radius:var(--r);transition:.2s;font-family:'Inter',sans-serif;white-space:nowrap;flex-shrink:1;min-width:0}
-        .pact:hover{background:var(--bg2);color:var(--t)}
-        .pact.on{color:var(--s)}
-        .pact.svd{color:var(--a)}
-        .pact .pi-icon{font-size:14px;transition:transform .2s;flex-shrink:0}
-        .pact:active .pi-icon{transform:scale(1.3)}
-        .pact .cnt{font-size:10px}
+        /* ============ Loader ============ */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
 
-        .modal-overlay{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:.3s}
-        .modal-overlay.on{opacity:1;visibility:visible}
-        .modal-sheet{background:var(--c);border-radius:var(--rl) var(--rl) 0 0;padding:20px 18px 24px;width:100%;max-width:500px;max-height:82vh;overflow-y:auto;transform:translateY(40px);transition:transform .35s cubic-bezier(.32,.72,0,1);border:1px solid var(--b);padding-bottom:max(24px,env(safe-area-inset-bottom))}
-        .modal-overlay.on .modal-sheet{transform:translateY(0)}
-        .mhandle{width:32px;height:4px;border-radius:2px;background:var(--b);margin:0 auto 12px}
-        .mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-        .mtitle{font-size:16px;font-weight:700}
-        .mclose{width:28px;height:28px;border-radius:50%;background:var(--bg2);border:none;color:var(--t2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
-        .mclose:hover{background:var(--err);color:#fff}
-        .mtextarea{width:100%;min-height:80px;background:var(--bg);border:1.5px solid var(--b);border-radius:var(--r);padding:10px;color:var(--t);font-size:14px;font-family:'Inter',sans-serif;resize:vertical;outline:none;transition:.3s}
-        .mtextarea:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--pg)}
-        .mchips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-        .mchip{padding:6px 10px;border-radius:16px;background:var(--bg);border:1px solid var(--b);color:var(--t2);font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:4px;transition:.2s}
-        .mchip:hover{border-color:var(--p);color:var(--p)}
-        .mbtn{width:100%;padding:12px;border-radius:var(--r);background:var(--p);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;margin-top:10px;font-family:'Inter',sans-serif;transition:.2s}
-        .mbtn:hover{background:var(--pl)}
-        .mbtn:disabled{opacity:.5;cursor:not-allowed}
-        .preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(75px,1fr));gap:6px;margin-top:8px}
-        .preview-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden}
-        .preview-item img,.preview-item video{width:100%;height:100%;object-fit:cover}
-        .preview-item .rm-btn{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:var(--err);color:#fff;border:none;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-        .voice-preview{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg);border-radius:var(--r);margin-top:6px}
+        #loader[aria-hidden="true"] {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
 
-        .contrib-list{margin-top:6px;max-height:220px;overflow-y:auto}
-        .contrib-item{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--b);align-items:flex-start}
-        .contrib-av{width:26px;height:26px;border-radius:50%;background:var(--p);color:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px}
-        .contrib-body{flex:1}
-        .contrib-name{font-weight:600;font-size:11px;color:var(--t)}
-        .contrib-text{font-size:12px;color:var(--t2);margin-top:1px}
-        .contrib-time{font-size:9px;color:var(--tm)}
-        .contrib-acts{display:flex;gap:8px;margin-top:3px}
-        .contrib-act{background:none;border:none;color:var(--tm);font-size:10px;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:2px}
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 3px solid var(--b);
+            border-top-color: var(--p);
+            animation: spin 0.8s linear infinite;
+        }
 
-        .story-viewer{position:fixed;inset:0;z-index:200;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:.3s;flex-direction:column}
-        .story-viewer.on{opacity:1;visibility:visible}
-        .story-viewer img,.story-viewer video{max-width:100%;max-height:85vh;object-fit:contain;border-radius:8px}
-        .story-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;border:none;font-size:20px;cursor:pointer;z-index:201;display:flex;align-items:center;justify-content:center}
-        .story-nav{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:201}
-        .story-dot{width:28px;height:3px;border-radius:2px;background:rgba(255,255,255,.4);transition:.3s}
-        .story-dot.act{background:#fff;width:36px}
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-        .empty{text-align:center;padding:50px 24px;color:var(--tm)}
-        .empty-icon{font-size:48px;margin-bottom:8px}
-        .empty-title{font-size:15px;font-weight:600;color:var(--t2)}
-        .empty-desc{font-size:12px;margin-top:3px}
+        .loader-t {
+            color: var(--tm);
+            font-size: 13px;
+            font-weight: 500;
+        }
 
-        .nav{flex-shrink:0;display:flex;align-items:center;justify-content:space-around;padding:6px 6px 10px;background:var(--c);border-top:1px solid var(--b);z-index:10;padding-bottom:max(10px,env(safe-area-inset-bottom))}
-        .nav-item{display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;padding:5px 8px;border-radius:10px;transition:.2s;background:none;border:none;color:var(--tm);font-family:'Inter',sans-serif;text-decoration:none}
-        .nav-item.act{color:var(--p)}
-        .nav-icon{font-size:19px}
-        .nav-label{font-size:9px;font-weight:500}
+        /* ============ Header ============ */
+        .header {
+            flex-shrink: 0;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--p);
+            color: #fff;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-        .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-140px);padding:10px 18px;border-radius:var(--r);font-size:12px;font-weight:600;z-index:300;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);box-shadow:var(--sh2);white-space:nowrap;background:var(--ok);color:#fff}
-        .toast.err{background:var(--err)}
-        .toast.show{transform:translateX(-50%) translateY(0)}
+        .hl {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-        .settings-btn{position:fixed;bottom:80px;right:16px;width:44px;height:44px;border-radius:50%;background:var(--c);border:1px solid var(--b);box-shadow:var(--sh2);z-index:50;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--t2);transition:.2s}
-        .settings-btn:hover{background:var(--bg2)}
+        .hlogo {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+            user-select: none;
+        }
 
-        @media(min-width:768px){body{max-width:500px;margin:0 auto;border-left:1px solid var(--b);border-right:1px solid var(--b)}}
+        .htitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            user-select: none;
+        }
+
+        .hr {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .hbtn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: background var(--tr), border-color var(--tr);
+            position: relative;
+        }
+
+        .hbtn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .hbtn:focus-visible {
+            border-color: #fff;
+            outline: none;
+        }
+
+        .badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            min-width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--s);
+            border: 2px solid var(--p);
+            display: none;
+            font-size: 0;
+        }
+
+        .badge[data-visible="true"] {
+            display: block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ============ Main Content ============ */
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        .main::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .main::-webkit-scrollbar-thumb {
+            background: var(--b);
+            border-radius: 2px;
+        }
+
+        /* ============ Stories ============ */
+        .stories-wrap {
+            padding: 12px 16px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--b);
+        }
+
+        .stories-row {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .stories-row::-webkit-scrollbar {
+            height: 0;
+        }
+
+        .si {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+            cursor: pointer;
+            scroll-snap-align: start;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.15s;
+            padding: 2px;
+        }
+
+        .si:active {
+            transform: scale(0.93);
+        }
+
+        .sr {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(135deg, #5B3C88, #FF7A59, #2BB3C0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sr.mine {
+            background: var(--b);
+            position: relative;
+        }
+
+        .sr.mine::after {
+            content: '+';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--p);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg);
+            line-height: 1;
+        }
+
+        .sr.viewed {
+            background: var(--b);
+        }
+
+        .sa {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--p);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            object-fit: cover;
+            border: 2px solid var(--c);
+            user-select: none;
+        }
+
+        .sn {
+            font-size: 10px;
+            color: var(--t2);
+            max-width: 58px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        /* ============ Create Bar ============ */
+        .create-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--bg);
+        }
+
+        .ca {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--p);
+            color: #fff;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        .ci {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 22px;
+            background: var(--c);
+            border: 1.5px solid var(--b);
+            color: var(--tm);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            text-align: left;
+            transition: border-color var(--tr), box-shadow var(--tr);
+        }
+
+        .ci:hover {
+            border-color: var(--p);
+        }
+
+        .ci:focus-visible {
+            box-shadow: var(--focus-ring);
+            outline: none;
+        }
+
+        .cp {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--s);
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background var(--tr);
+        }
+
+        .cp:active {
+            transform: scale(0.88);
+        }
+
+        /* ============ Posts ============ */
+        .post {
+            background: var(--c);
+            margin: 8px 12px;
+            border-radius: var(--rm);
+            padding: 12px 14px;
+            border: 1px solid var(--b);
+            box-shadow: var(--sh);
+            animation: fadeInUp 0.35s forwards;
+            opacity: 0;
+            transition: background var(--tr), border-color var(--tr);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ph {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .pa {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--p);
+            color: #fff;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        .pi {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pn {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--t);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .pt {
+            font-size: 10px;
+            color: var(--tm);
+        }
+
+        .rb {
+            font-size: 10px;
+            color: var(--a);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 4px;
+        }
+
+        .pb {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--t);
+            margin-bottom: 6px;
+            word-break: break-word;
+            position: relative;
+        }
+
+        .pb.trunc {
+            max-height: 80px;
+            overflow: hidden;
+        }
+
+        .pb.trunc::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(transparent, var(--c));
+            pointer-events: none;
+        }
+
+        .rml {
+            color: var(--a);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            background: none;
+            border: 2px solid transparent;
+            font-family: 'Inter', sans-serif;
+            display: block;
+            margin: 4px 0;
+            padding: 4px 0;
+            transition: color var(--tr);
+        }
+
+        .rml:hover {
+            color: var(--p);
+            text-decoration: underline;
+        }
+
+        .pimgs {
+            display: grid;
+            gap: 3px;
+            margin-bottom: 6px;
+        }
+
+        .pimgs.g1 { grid-template-columns: 1fr; }
+        .pimgs.g2 { grid-template-columns: 1fr 1fr; }
+        .pimgs.g3 { 
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+        }
+        .pimgs.g3 img:first-child { 
+            grid-row: span 2;
+            height: 100%;
+        }
+        .pimgs.g4 { grid-template-columns: 1fr 1fr; }
+
+        .pimg {
+            width: 100%;
+            border-radius: var(--r);
+            object-fit: cover;
+            cursor: pointer;
+            max-height: 300px;
+            background: var(--bg2);
+            transition: opacity 0.3s;
+        }
+
+        .pimg:hover {
+            opacity: 0.9;
+        }
+
+        .pvoice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg2);
+            border-radius: var(--r);
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
+
+        .pvoice audio {
+            width: 100%;
+            height: 32px;
+        }
+
+        /* Post Actions */
+        .pacts {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 0 0;
+            border-top: 1px solid var(--b);
+            gap: 0;
+            flex-wrap: nowrap;
+        }
+
+        .pact {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: 2px solid transparent;
+            color: var(--tm);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 8px;
+            border-radius: var(--r);
+            transition: background var(--tr), color var(--tr);
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+
+        .pact:hover {
+            background: var(--bg2);
+            color: var(--t);
+        }
+
+        .pact:focus-visible {
+            outline: none;
+            box-shadow: var(--focus-ring);
+        }
+
+        .pact[aria-pressed="true"] {
+            color: var(--s);
+        }
+
+        .pact.svd {
+            color: var(--a);
+        }
+
+        .pact .pi-icon {
+            font-size: 16px;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+            pointer-events: none;
+        }
+
+        .pact:active .pi-icon {
+            transform: scale(1.3);
+        }
+
+        .pact .cnt {
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        /* ============ Modals ============ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 150;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--tr), visibility var(--tr);
+        }
+
+        .modal-overlay[aria-hidden="false"] {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-sheet {
+            background: var(--c);
+            border-radius: var(--rl) var(--rl) 0 0;
+            padding: 20px 18px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 82vh;
+            overflow-y: auto;
+            transform: translateY(40px);
+            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+            border: 1px solid var(--b);
+            padding-bottom: max(24px, env(safe-area-inset-bottom));
+        }
+
+        .modal-overlay[aria-hidden="false"] .modal-sheet {
+            transform: translateY(0);
+        }
+
+        .mhandle {
+            width: 32px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--b);
+            margin: 0 auto 12px;
+        }
+
+        .mhdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .mtitle {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .mclose {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg2);
+            border: 2px solid transparent;
+            color: var(--t2);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--tr), color var(--tr);
+        }
+
+        .mclose:hover {
+            background: var(--err);
+            color: #fff;
+        }
+
+        .mclose:focus-visible {
+            outline: none;
+            box-shadow: var(--focus-ring);
+        }
+
+        .mtextarea {
+            width: 100%;
+            min-height: 80px;
+            background: var(--bg);
+            border: 1.5px solid var(--b);
+            border-radius: var(--r);
+            padding: 10px;
+            color: var(--t);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            outline: none;
+            transition: border-color var(--tr), box-shadow var(--tr);
+        }
+
+        .mtextarea:focus {
+            border-color: var(--p);
+            box-shadow: var(--focus-ring);
+        }
+
+        .mchips {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mchip {
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: var(--bg);
+            border: 1.5px solid var(--b);
+            color: var(--t2);
+            font-size: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: border-color var(--tr), color var(--tr), background var(--tr);
+        }
+
+        .mchip:hover {
+            border-color: var(--p);
+            color: var(--p);
+            background: var(--c);
+        }
+
+        .mbtn {
+            width: 100%;
+            padding: 12px;
+            border-radius: var(--r);
+            background: var(--p);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid transparent;
+            cursor: pointer;
+            margin-top: 12px;
+            font-family: 'Inter', sans-serif;
+            transition: background var(--tr), transform 0.1s;
+        }
+
+        .mbtn:hover:not(:disabled) {
+            background: var(--pl);
+        }
+
+        .mbtn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .mbtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--b);
+        }
+
+        .preview-item img,
+        .preview-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-item .rm-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--err);
+            color: #fff;
+            border: 2px solid #fff;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            z-index: 2;
+        }
+
+        .preview-item .rm-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .voice-preview {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg);
+            border-radius: var(--r);
+            margin-top: 6px;
+            border: 1px solid var(--b);
+        }
+
+        /* ============ Contributions ============ */
+        .contrib-list {
+            margin-top: 6px;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .contrib-item {
+            display: flex;
+            gap: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--b);
+            align-items: flex-start;
+        }
+
+        .contrib-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--p);
+            color: #fff;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            user-select: none;
+        }
+
+        .contrib-body {
+            flex: 1;
+        }
+
+        .contrib-name {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--t);
+        }
+
+        .contrib-text {
+            font-size: 12px;
+            color: var(--t2);
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+
+        .contrib-time {
+            font-size: 9px;
+            color: var(--tm);
+        }
+
+        .contrib-acts {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .contrib-act {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--tm);
+            font-size: 10px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: color var(--tr), background var(--tr);
+        }
+
+        .contrib-act:hover {
+            color: var(--p);
+            background: var(--bg2);
+        }
+
+        /* ============ Story Viewer ============ */
+        .story-viewer {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--tr), visibility var(--tr);
+            flex-direction: column;
+        }
+
+        .story-viewer[aria-hidden="false"] {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .story-viewer img,
+        .story-viewer video {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .story-close {
+            position: absolute;
+            top: max(16px, env(safe-area-inset-top));
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid transparent;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 201;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--tr);
+        }
+
+        .story-close:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .story-nav {
+            position: absolute;
+            bottom: max(30px, env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 201;
+        }
+
+        .story-dot {
+            width: 28px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.4);
+            transition: background var(--tr), width var(--tr);
+            cursor: pointer;
+            border: none;
+        }
+
+        .story-dot.active {
+            background: #fff;
+            width: 36px;
+        }
+
+        /* ============ Empty State ============ */
+        .empty {
+            text-align: center;
+            padding: 50px 24px;
+            color: var(--tm);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .empty-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--t2);
+        }
+
+        .empty-desc {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* ============ Navigation ============ */
+        .nav {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 6px 6px;
+            background: var(--c);
+            border-top: 1px solid var(--b);
+            z-index: 10;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 10px;
+            transition: background var(--tr), color var(--tr);
+            background: none;
+            border: 2px solid transparent;
+            color: var(--tm);
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .nav-item:hover {
+            background: var(--bg2);
+        }
+
+        .nav-item[aria-current="page"] {
+            color: var(--p);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            pointer-events: none;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        /* ============ Toast Notifications ============ */
+        .toast {
+            position: fixed;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-140px);
+            padding: 12px 20px;
+            border-radius: var(--r);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 300;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--sh2);
+            white-space: nowrap;
+            background: var(--ok);
+            color: #fff;
+            pointer-events: none;
+        }
+
+        .toast.error {
+            background: var(--err);
+        }
+
+        .toast[aria-hidden="false"] {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ============ Settings Button ============ */
+        .settings-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--c);
+            border: 1px solid var(--b);
+            box-shadow: var(--sh2);
+            z-index: 50;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--t2);
+            transition: background var(--tr), transform 0.2s;
+        }
+
+        .settings-btn:hover {
+            background: var(--bg2);
+            transform: rotate(30deg);
+        }
+
+        /* Toggle switch */
+        .toggle-switch {
+            width: 52px;
+            height: 28px;
+            border-radius: 14px;
+            background: var(--b);
+            position: relative;
+            transition: background var(--tr);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch[aria-checked="true"] {
+            background: var(--p);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fff;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform var(--tr);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch[aria-checked="true"]::after {
+            transform: translateX(24px);
+        }
+
+        /* ============ Responsive ============ */
+        @media (min-width: 768px) {
+            body {
+                max-width: 500px;
+                margin: 0 auto;
+                border-left: 1px solid var(--b);
+                border-right: 1px solid var(--b);
+            }
+        }
+
+        /* ============ Reduced Motion ============ */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
-
-<div id="loader"><div class="spinner"></div><p class="loader-t">Loading SPACchat...</p></div>
-<div class="toast" id="toast"></div>
-
-<header class="header">
-    <div class="hl"><div class="hlogo">S</div><span class="htitle">SPACchat</span></div>
-    <div class="hr">
-        <button class="hbtn" id="themeToggle" title="Toggle theme">🌓</button>
-        <button class="hbtn" id="notifBtn" title="Notifications">🔔<span class="badge" id="notifBadge"></span></button>
-        <button class="hbtn" onclick="location.href='profile.html'" title="Profile"><span id="headerAv">👤</span></button>
+    <!-- Loader -->
+    <div id="loader" role="status" aria-label="Loading">
+        <div class="spinner" aria-hidden="true"></div>
+        <p class="loader-t">Loading SPACchat...</p>
     </div>
-</header>
 
-<div class="main" id="mainContent">
-    <div class="stories-wrap"><div class="stories-row" id="storiesRow"></div></div>
-    <div class="create-bar">
-        <div class="ca" id="barAv">OK</div>
-        <button class="ci" id="openCreate">Proclaim something...</button>
-        <button class="cp" id="openCreatePlus">+</button>
-    </div>
-    <div id="feed"></div>
-</div>
+    <!-- Toast Notifications -->
+    <div class="toast" id="toast" role="alert" aria-hidden="true" aria-live="polite"></div>
 
-<nav class="nav">
-    <button class="nav-item act"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
-    <button class="nav-item" onclick="location.href='chat.html'"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
-    <button class="nav-item" onclick="location.href='media.html'"><span class="nav-icon">🎵</span><span class="nav-label">Media</span></button>
-    <button class="nav-item" onclick="location.href='groups.html'"><span class="nav-icon">👥</span><span class="nav-label">Groups</span></button>
-    <button class="nav-item" onclick="location.href='profile.html'"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
-</nav>
-
-<div class="settings-btn" id="settingsBtn" title="Settings">⚙️</div>
-
-<!-- CREATE POST MODAL -->
-<div class="modal-overlay" id="postModal">
-    <div class="modal-sheet">
-        <div class="mhandle"></div>
-        <div class="mhdr"><span class="mtitle">New Proclamation</span><button class="mclose" id="closePostModal">✕</button></div>
-        <textarea class="mtextarea" id="postContent" placeholder="What's on your spirit today?"></textarea>
-        <div class="mchips">
-            <button class="mchip" id="uploadImgBtn">📷 Photos</button>
-            <button class="mchip" id="uploadVidBtn">🎬 Video</button>
-            <button class="mchip" id="recordVoiceBtn">🎤 Voice</button>
-            <button class="mchip" id="uploadDocBtn">📎 File</button>
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="hl">
+            <div class="hlogo" aria-hidden="true">S</div>
+            <span class="htitle">SPACchat</span>
         </div>
-        <input type="file" id="imgInput" accept="image/*" multiple style="display:none">
-        <input type="file" id="vidInput" accept="video/*" style="display:none">
-        <input type="file" id="docInput" accept=".pdf,.doc,.docx,.txt" style="display:none">
-        <div class="preview-grid" id="mediaPreview"></div>
-        <div class="voice-preview" id="voicePreview" style="display:none"></div>
-        <button class="mbtn" id="submitPost">Proclaim 🔥</button>
-    </div>
-</div>
-
-<!-- CONTRIBUTIONS MODAL -->
-<div class="modal-overlay" id="contribModal">
-    <div class="modal-sheet">
-        <div class="mhandle"></div>
-        <div class="mhdr"><span class="mtitle">Contributions</span><button class="mclose" id="closeContribModal">✕</button></div>
-        <div class="contrib-list" id="contribList"></div>
-        <textarea class="mtextarea" id="contribInput" placeholder="Add a contribution..." style="margin-top:8px;min-height:50px;"></textarea>
-        <button class="mbtn" id="submitContrib">Send Contribution</button>
-    </div>
-</div>
-
-<!-- STORY VIEWER -->
-<div class="story-viewer" id="storyViewer">
-    <button class="story-close" id="closeStoryViewer">✕</button>
-    <div id="storyContent"></div>
-    <div class="story-nav" id="storyNav"></div>
-</div>
-
-<!-- STORY CREATE MODAL -->
-<div class="modal-overlay" id="storyModal">
-    <div class="modal-sheet">
-        <div class="mhandle"></div>
-        <div class="mhdr"><span class="mtitle">Add Story</span><button class="mclose" id="closeStoryModal">✕</button></div>
-        <div class="mchips" style="justify-content:center">
-            <button class="mchip" id="storyImgBtn">📷 Photo</button>
-            <button class="mchip" id="storyVidBtn">🎬 Video</button>
+        <div class="hr">
+            <button class="hbtn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">🌓</button>
+            <button class="hbtn" id="notifBtn" aria-label="Notifications" title="Notifications">
+                🔔
+                <span class="badge" id="notifBadge" data-visible="false" aria-hidden="true"></span>
+            </button>
+            <button class="hbtn" onclick="location.href='profile.html'" aria-label="Profile" title="Profile">
+                <span id="headerAv">👤</span>
+            </button>
         </div>
-        <input type="file" id="storyImgInput" accept="image/*" style="display:none">
-        <input type="file" id="storyVidInput" accept="video/*" style="display:none">
-        <div id="storyPreview" style="text-align:center;margin-top:10px;"></div>
-        <button class="mbtn" id="submitStory">Post Story</button>
-    </div>
-</div>
+    </header>
 
-<!-- SETTINGS MODAL -->
-<div class="modal-overlay" id="settingsModal">
-    <div class="modal-sheet">
-        <div class="mhandle"></div>
-        <div class="mhdr"><span class="mtitle">Settings</span><button class="mclose" id="closeSettingsModal">✕</button></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--b);cursor:pointer" id="darkModeRow">
-            <span style="font-weight:500">🌙 Dark Mode</span>
-            <div id="darkToggle" style="width:48px;height:26px;border-radius:13px;background:var(--b);position:relative;transition:.3s">
-                <div style="width:22px;height:22px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+    <!-- Main Content -->
+    <main class="main" id="mainContent" role="main">
+        <div class="stories-wrap">
+            <div class="stories-row" id="storiesRow" role="list" aria-label="Stories"></div>
+        </div>
+        <div class="create-bar">
+            <div class="ca" id="barAv" aria-hidden="true">OK</div>
+            <button class="ci" id="openCreate" aria-label="Create new post">Proclaim something...</button>
+            <button class="cp" id="openCreatePlus" aria-label="Create new post">+</button>
+        </div>
+        <div id="feed" role="feed" aria-label="Posts feed"></div>
+    </main>
+
+    <!-- Navigation -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <button class="nav-item" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">🏠</span>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" onclick="location.href='chat.html'">
+            <span class="nav-icon" aria-hidden="true">💬</span>
+            <span class="nav-label">Chat</span>
+        </button>
+        <button class="nav-item" onclick="location.href='media.html'">
+            <span class="nav-icon" aria-hidden="true">🎵</span>
+            <span class="nav-label">Media</span>
+        </button>
+        <button class="nav-item" onclick="location.href='groups.html'">
+            <span class="nav-icon" aria-hidden="true">👥</span>
+            <span class="nav-label">Groups</span>
+        </button>
+        <button class="nav-item" onclick="location.href='profile.html'">
+            <span class="nav-icon" aria-hidden="true">👤</span>
+            <span class="nav-label">Profile</span>
+        </button>
+    </nav>
+
+    <button class="settings-btn" id="settingsBtn" aria-label="Settings" title="Settings">⚙️</button>
+
+    <!-- Create Post Modal -->
+    <div class="modal-overlay" id="postModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="postModalTitle">
+        <div class="modal-sheet">
+            <div class="mhandle" aria-hidden="true"></div>
+            <div class="mhdr">
+                <span class="mtitle" id="postModalTitle">New Proclamation</span>
+                <button class="mclose" id="closePostModal" aria-label="Close dialog">✕</button>
             </div>
+            <textarea class="mtextarea" id="postContent" placeholder="What's on your spirit today?" maxlength="5000" aria-label="Post content"></textarea>
+            <div class="mchips">
+                <button class="mchip" id="uploadImgBtn" aria-label="Upload photos">📷 Photos</button>
+                <button class="mchip" id="uploadVidBtn" aria-label="Upload video">🎬 Video</button>
+                <button class="mchip" id="recordVoiceBtn" aria-label="Record voice note">🎤 Voice</button>
+                <button class="mchip" id="uploadDocBtn" aria-label="Upload file">📎 File</button>
+            </div>
+            <input type="file" id="imgInput" accept="image/*" multiple style="display:none" aria-hidden="true">
+            <input type="file" id="vidInput" accept="video/*" style="display:none" aria-hidden="true">
+            <input type="file" id="docInput" accept=".pdf,.doc,.docx,.txt" style="display:none" aria-hidden="true">
+            <div class="preview-grid" id="mediaPreview" aria-label="Media previews"></div>
+            <div class="voice-preview" id="voicePreview" style="display:none" aria-label="Voice note preview"></div>
+            <button class="mbtn" id="submitPost">Proclaim 🔥</button>
         </div>
-        <button class="mbtn" onclick="auth.signOut();location.href='index.html'" style="background:var(--err);margin-top:16px">Log Out</button>
     </div>
-</div>
 
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    <!-- Contributions Modal -->
+    <div class="modal-overlay" id="contribModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="contribModalTitle">
+        <div class="modal-sheet">
+            <div class="mhandle" aria-hidden="true"></div>
+            <div class="mhdr">
+                <span class="mtitle" id="contribModalTitle">Contributions</span>
+                <button class="mclose" id="closeContribModal" aria-label="Close dialog">✕</button>
+            </div>
+            <div class="contrib-list" id="contribList" role="list" aria-label="Contributions list"></div>
+            <textarea class="mtextarea" id="contribInput" placeholder="Add a contribution..." maxlength="1000" style="margin-top:8px;min-height:50px;" aria-label="Contribution text"></textarea>
+            <button class="mbtn" id="submitContrib">Send Contribution</button>
+        </div>
+    </div>
 
-const FC={apiKey:"AIzaSyCo6bD1yB9SHG4Iem-MhniQ4YyOEQv-_YA",authDomain:"spacchat-e35b8.firebaseapp.com",projectId:"spacchat-e35b8",storageBucket:"spacchat-e35b8.firebasestorage.app",messagingSenderId:"407081887262",appId:"1:407081887262:web:62879d6d38f6482982700f"};
-const SU="https://akbwcgzymrygsjpmwysm.supabase.co";
-const SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrYndjZ3p5bXJ5Z3NqcG13eXNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyOTE4MjUsImV4cCI6MjA5NDg2NzgyNX0.--2SPkyKOI2aWACgib6uPUFTzLvHlocPfdRZvUeLGI4";
-const CC="dcwof2ngn",CP="Meet_video";
+    <!-- Story Viewer -->
+    <div class="story-viewer" id="storyViewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Story viewer">
+        <button class="story-close" id="closeStoryViewer" aria-label="Close story">✕</button>
+        <div id="storyContent" aria-live="polite"></div>
+        <div class="story-nav" id="storyNav" role="tablist" aria-label="Story navigation"></div>
+    </div>
 
-const app=initializeApp(FC);
-const auth=getAuth(app);
-window.auth=auth;
+    <!-- Story Create Modal -->
+    <div class="modal-overlay" id="storyModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="storyModalTitle">
+        <div class="modal-sheet">
+            <div class="mhandle" aria-hidden="true"></div>
+            <div class="mhdr">
+                <span class="mtitle" id="storyModalTitle">Add Story</span>
+                <button class="mclose" id="closeStoryModal" aria-label="Close dialog">✕</button>
+            </div>
+            <div class="mchips" style="justify-content:center">
+                <button class="mchip" id="storyImgBtn" aria-label="Upload story photo">📷 Photo</button>
+                <button class="mchip" id="storyVidBtn" aria-label="Upload story video">🎬 Video</button>
+            </div>
+            <input type="file" id="storyImgInput" accept="image/*" style="display:none" aria-hidden="true">
+            <input type="file" id="storyVidInput" accept="video/*" style="display:none" aria-hidden="true">
+            <div id="storyPreview" style="text-align:center;margin-top:10px;" aria-label="Story preview"></div>
+            <button class="mbtn" id="submitStory">Post Story</button>
+        </div>
+    </div>
 
-let cu=null,cp=null,posts=[],upMedia=[],upVoice=null,storyMedia=null,actPid=null,storyIdx=0,allStories=[];
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="settingsModalTitle">
+        <div class="modal-sheet">
+            <div class="mhandle" aria-hidden="true"></div>
+            <div class="mhdr">
+                <span class="mtitle" id="settingsModalTitle">Settings</span>
+                <button class="mclose" id="closeSettingsModal" aria-label="Close dialog">✕</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--b);cursor:pointer" id="darkModeRow" role="switch" aria-checked="false" aria-label="Toggle dark mode" tabindex="0">
+                <span style="font-weight:500">🌙 Dark Mode</span>
+                <div class="toggle-switch" id="darkToggle" aria-hidden="true"></div>
+            </div>
+            <button class="mbtn" id="logoutBtn" style="background:var(--err);margin-top:16px">Log Out</button>
+        </div>
+    </div>
 
-const $=id=>document.getElementById(id);
-const T=(m,e)=>{const t=$('toast');t.textContent=m;t.className='toast'+(e?' err':'');t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500)};
-const ini=n=>{if(!n)return'??';const p=n.trim().split(/\s+/);return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():n.substring(0,2).toUpperCase()};
-const ta=d=>{const s=Math.floor((Date.now()-new Date(d).getTime())/1000);if(isNaN(s))return'';if(s<60)return'now';if(s<3600)return Math.floor(s/60)+'m';if(s<86400)return Math.floor(s/3600)+'h';if(s<604800)return Math.floor(s/86400)+'d';return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'})};
-const eh=s=>{if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML};
-const suF=async p=>{const r=await fetch(`${SU}${p}`,{headers:{'apikey':SK,'Authorization':`Bearer ${SK}`}});if(!r.ok)throw new Error('Fail');return r.json()};
+    <script type="module">
+        // ============ Configuration & Constants ============
+        const CONFIG = Object.freeze({
+            FIREBASE: {
+                apiKey: "AIzaSyCo6bD1yB9SHG4Iem-MhniQ4YyOEQv-_YA",
+                authDomain: "spacchat-e35b8.firebaseapp.com",
+                projectId: "spacchat-e35b8",
+                storageBucket: "spacchat-e35b8.firebasestorage.app",
+                messagingSenderId: "407081887262",
+                appId: "1:407081887262:web:62879d6d38f6482982700f"
+            },
+            SUPABASE_URL: "https://akbwcgzymrygsjpmwysm.supabase.co",
+            // IMPORTANT: Use anon key in production, NOT service_role
+            SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrYndjZ3p5bXJ5Z3NqcG13eXNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyOTE4MjUsImV4cCI6MjA5NDg2NzgyNX0.--2SPkyKOI2aWACgib6uPUFTzLvHlocPfdRZvUeLGI4",
+            CLOUDINARY_CLOUD: "dcwof2ngn",
+            CLOUDINARY_UPLOAD_PRESET: "Meet_video",
+            MAX_POST_LENGTH: 5000,
+            MAX_CONTRIBUTION_LENGTH: 1000,
+            MAX_MEDIA_FILES: 10,
+            MAX_FILE_SIZE_MB: 50,
+            STORY_DURATION_MS: 5000,
+            FEED_PAGE_SIZE: 20,
+            TOAST_DURATION: 3000
+        });
 
-// THEME
-function loadTheme(){const t=localStorage.getItem('spac_theme')||'light';document.documentElement.setAttribute('data-theme',t);const tg=$('darkToggle');if(tg){if(t==='dark'){tg.style.background='var(--p)';tg.children[0].style.transform='translateX(22px)'}else{tg.style.background='var(--b)';tg.children[0].style.transform='translateX(2px)'}}}
-function toggleTheme(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('spac_theme',n);loadTheme()}
-$('themeToggle').addEventListener('click',toggleTheme);
-$('darkModeRow').addEventListener('click',toggleTheme);
+        // ============ Firebase Initialization ============
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// SETTINGS
-$('settingsBtn').addEventListener('click',()=>{$('settingsModal').classList.add('on')});
-$('closeSettingsModal').addEventListener('click',()=>{$('settingsModal').classList.remove('on')});
-$('settingsModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')});
+        const app = initializeApp(CONFIG.FIREBASE);
+        const auth = getAuth(app);
+        window.auth = auth;
 
-// PROFILE
-async function getProfile(uid){try{const u=await suF(`/rest/v1/users?id=eq.${uid}&limit=1`);return u[0]||null}catch(e){return null}}
+        // ============ Utility Functions ============
+        const $ = (id) => document.getElementById(id);
+        const $$ = (selector, parent = document) => parent.querySelectorAll(selector);
 
-// FEED
-async function getFeed(){
-    try{
-        const[pRes,rRes]=await Promise.all([
-            fetch(`${SU}/rest/v1/posts?post_status=eq.published&order=created_at.desc&limit=60`,{headers:{'apikey':SK,'Authorization':`Bearer ${SK}`}}),
-            fetch(`${SU}/rest/v1/reproclaims?order=created_at.desc&limit=30`,{headers:{'apikey':SK,'Authorization':`Bearer ${SK}`}})
-        ]);
-        const rp=pRes.ok?await pRes.json():[];
-        const repros=rRes.ok?await rRes.json():[];
-        const items=[],pm={};
-        rp.forEach(p=>{pm[p.id]=p;items.push({type:'post',data:p,time:p.created_at})});
-        for(const r of repros){
-            if(pm[r.post_id])items.push({type:'repro',data:{...pm[r.post_id],repro_by:r.user_id,repro_at:r.created_at},time:r.created_at});
-            else{try{const rp2=await suF(`/rest/v1/posts?id=eq.${r.post_id}&limit=1`);if(rp2[0])items.push({type:'repro',data:{...rp2[0],repro_by:r.user_id,repro_at:r.created_at},time:r.created_at})}catch(e){}}
+        // Debounce utility
+        function debounce(fn, delay = 300) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => fn.apply(this, args), delay);
+            };
         }
-        items.sort((a,b)=>new Date(b.time)-new Date(a.time));
-        return items.slice(0,80);
-    }catch(e){return[]}
-}
 
-async function renderFeed(){
-    const f=$('feed');f.innerHTML='';
-    const items=await getFeed();
-    if(!items.length){f.innerHTML='<div class="empty"><div class="empty-icon">🕊️</div><div class="empty-title">No proclamations yet</div><div class="empty-desc">Be the first to proclaim!</div></div>';return}
-    const uids=[...new Set(items.map(i=>i.data.user_id).concat(items.map(i=>i.data.repro_by).filter(Boolean)))];
-    const um={};for(const uid of uids){um[uid]=await getProfile(uid)}
-    let uReacts=new Set,uSaves=new Set;
-    if(cu){try{const[rr,ss]=await Promise.all([suF(`/rest/v1/reactions?user_id=eq.${cu.uid}&reaction_type=eq.spac`),suF(`/rest/v1/saved_posts?user_id=eq.${cu.uid}`)]);rr.forEach(r=>uReacts.add(r.post_id));ss.forEach(s=>uSaves.add(s.post_id))}catch(e){}}
-    items.forEach((item,i)=>{
-        const post=item.data,card=document.createElement('div');
-        card.className='post';card.style.animationDelay=`${i*0.02}s`;card.setAttribute('data-pid',post.id);
-        const pr=um[post.user_id],rpr=post.repro_by?um[post.repro_by]:null;
-        const dn=pr?.full_name||pr?.username||post.user_id?.substring(0,8)||'User';
-        const rn=rpr?.full_name||rpr?.username||post.repro_by?.substring(0,8)||'';
-        const hasMedia=post.media_urls&&post.media_urls.length>0;
-        const isLong=post.content&&post.content.length>200;
-        let mediaHTML='';
-        if(hasMedia){
-            const isVideo=post.media_urls.some(u=>u.match(/\.(mp4|webm|mov)/i));
-            if(isVideo||post.post_type==='video'){
-                mediaHTML=post.media_urls.map(u=>u.match(/\.(mp4|webm|mov)/i)?`<video class="pimg" controls preload="metadata" style="max-height:300px"><source src="${u}" type="video/mp4"></video>`:`<img class="pimg" src="${u}" loading="lazy" onclick="window.open('${u}','_blank')">`).join('');
-            }else{
-                const n=post.media_urls.length,gc=n===1?'g1':n===2?'g2':n===3?'g3':'g4';
-                mediaHTML=`<div class="pimgs ${gc}">${post.media_urls.map(u=>`<img class="pimg" src="${u}" loading="lazy" onclick="window.open('${u}','_blank')">`).join('')}</div>`;
+        // Throttle utility
+        function throttle(fn, limit = 300) {
+            let inThrottle;
+            return function(...args) {
+                if (!inThrottle) {
+                    fn.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+
+        // Toast notification system
+        const Toast = {
+            _timeout: null,
+            show(message, isError = false, duration = CONFIG.TOAST_DURATION) {
+                const toast = $('toast');
+                if (!toast) return;
+                
+                clearTimeout(this._timeout);
+                toast.textContent = message;
+                toast.className = `toast${isError ? ' error' : ''}`;
+                toast.setAttribute('aria-hidden', 'false');
+                
+                this._timeout = setTimeout(() => {
+                    toast.setAttribute('aria-hidden', 'true');
+                }, duration);
+            },
+            success(msg) { this.show(msg, false); },
+            error(msg) { this.show(msg, true); }
+        };
+
+        // Get initials from name
+        function getInitials(name) {
+            if (!name) return '??';
+            const parts = name.trim().split(/\s+/);
+            return parts.length >= 2 
+                ? (parts[0][0] + parts[1][0]).toUpperCase()
+                : name.substring(0, 2).toUpperCase();
+        }
+
+        // Time ago formatter
+        function timeAgo(date) {
+            if (!date) return '';
+            const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+            if (isNaN(seconds)) return '';
+            if (seconds < 60) return 'now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)}d`;
+            return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        // Safe HTML escaping
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Generate unique ID
+        function generateId() {
+            return `id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        }
+
+        // ============ API Service ============
+        class ApiService {
+            constructor(baseUrl, anonKey) {
+                this.baseUrl = baseUrl;
+                this.anonKey = anonKey;
+                this.cache = new Map();
+                this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+            }
+
+            getHeaders() {
+                return {
+                    'apikey': this.anonKey,
+                    'Authorization': `Bearer ${this.anonKey}`,
+                    'Content-Type': 'application/json'
+                };
+            }
+
+            async request(endpoint, options = {}) {
+                const url = `${this.baseUrl}${endpoint}`;
+                const config = {
+                    headers: this.getHeaders(),
+                    ...options
+                };
+
+                try {
+                    const response = await fetch(url, config);
+                    
+                    if (!response.ok) {
+                        const errorBody = await response.text();
+                        throw new Error(`API Error ${response.status}: ${errorBody}`);
+                    }
+
+                    // Handle 204 No Content
+                    if (response.status === 204) return null;
+                    
+                    return await response.json();
+                } catch (error) {
+                    console.error(`API Request Failed: ${endpoint}`, error);
+                    throw error;
+                }
+            }
+
+            async get(endpoint, params = {}) {
+                const queryString = new URLSearchParams(params).toString();
+                const url = queryString ? `${endpoint}?${queryString}` : endpoint;
+                return this.request(url);
+            }
+
+            async post(endpoint, data) {
+                return this.request(endpoint, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        ...this.getHeaders(),
+                        'Prefer': 'return=representation'
+                    }
+                });
+            }
+
+            async patch(endpoint, data) {
+                return this.request(endpoint, {
+                    method: 'PATCH',
+                    body: JSON.stringify(data),
+                    headers: {
+                        ...this.getHeaders(),
+                        'Prefer': 'return=minimal'
+                    }
+                });
+            }
+
+            async delete(endpoint) {
+                return this.request(endpoint, {
+                    method: 'DELETE',
+                    headers: {
+                        ...this.getHeaders(),
+                        'Prefer': 'return=minimal'
+                    }
+                });
+            }
+
+            // Cache management
+            getCached(key) {
+                const cached = this.cache.get(key);
+                if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+                    return cached.data;
+                }
+                this.cache.delete(key);
+                return null;
+            }
+
+            setCache(key, data) {
+                this.cache.set(key, { data, timestamp: Date.now() });
+            }
+
+            clearCache() {
+                this.cache.clear();
             }
         }
-        if(post.post_type==='voice'&&post.media_urls&&post.media_urls[0]){
-            mediaHTML=`<div class="pvoice"><audio controls src="${post.media_urls[0]}"></audio></div>`;
+
+        const api = new ApiService(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+
+        // ============ State Management ============
+        class AppState {
+            constructor() {
+                this.state = {
+                    currentUser: null,
+                    currentProfile: null,
+                    posts: [],
+                    uploadMedia: [],
+                    uploadVoice: null,
+                    storyMedia: null,
+                    activePostId: null,
+                    storyIndex: 0,
+                    allStories: [],
+                    userReactions: new Set(),
+                    userSavedPosts: new Set(),
+                    profiles: new Map()
+                };
+                this.listeners = new Map();
+            }
+
+            get(key) {
+                return this.state[key];
+            }
+
+            set(key, value) {
+                const oldValue = this.state[key];
+                this.state[key] = value;
+                this.notify(key, value, oldValue);
+            }
+
+            subscribe(key, callback) {
+                if (!this.listeners.has(key)) {
+                    this.listeners.set(key, new Set());
+                }
+                this.listeners.get(key).add(callback);
+                
+                // Return unsubscribe function
+                return () => {
+                    this.listeners.get(key)?.delete(callback);
+                };
+            }
+
+            notify(key, newValue, oldValue) {
+                this.listeners.get(key)?.forEach(callback => {
+                    try {
+                        callback(newValue, oldValue);
+                    } catch (error) {
+                        console.error(`State listener error for ${key}:`, error);
+                    }
+                });
+            }
         }
-        let reproHTML='';
-        if(item.type==='repro'&&rn){
-            reproHTML=`<div class="rb">🔄 <strong>${eh(rn)}</strong> reproclaimed • ${ta(post.repro_at)}</div>`;
+
+        const state = new AppState();
+
+        // ============ Theme Manager ============
+        class ThemeManager {
+            constructor() {
+                this.STORAGE_KEY = 'spac_theme';
+            }
+
+            init() {
+                const savedTheme = localStorage.getItem(this.STORAGE_KEY) || 'light';
+                this.apply(savedTheme);
+                this.updateToggleUI(savedTheme);
+            }
+
+            get() {
+                return document.documentElement.getAttribute('data-theme') || 'light';
+            }
+
+            apply(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem(this.STORAGE_KEY, theme);
+                
+                // Update meta theme-color
+                const meta = document.querySelector('meta[name="theme-color"]');
+                if (meta) {
+                    meta.content = theme === 'dark' ? '#1A1625' : '#5B3C88';
+                }
+            }
+
+            toggle() {
+                const current = this.get();
+                const next = current === 'dark' ? 'light' : 'dark';
+                this.apply(next);
+                this.updateToggleUI(next);
+                return next;
+            }
+
+            updateToggleUI(theme) {
+                const toggle = $('darkToggle');
+                const row = $('darkModeRow');
+                
+                if (toggle) {
+                    toggle.setAttribute('aria-checked', theme === 'dark');
+                }
+                if (row) {
+                    row.setAttribute('aria-checked', theme === 'dark');
+                }
+            }
         }
-        card.innerHTML=`${reproHTML}<div class="ph"><div class="pa">${ini(dn)}</div><div class="pi"><div class="pn">${eh(dn)}</div><div class="pt">${ta(post.created_at)}</div></div></div>
-        <div class="pb${isLong?' trunc':''}" id="body-${post.id}">${eh(post.content||'')}</div>${isLong?`<button class="rml" data-pid="${post.id}" data-action="readmore">Read more</button>`:''}
-        ${mediaHTML}
-        <div class="pacts">
-            <button class="pact sb ${uReacts.has(post.id)?'on':''}" data-pid="${post.id}"><span class="pi-icon">🔥</span><span class="cnt">${post.spac_count||0}</span></button>
-            <button class="pact cb" data-pid="${post.id}"><span class="pi-icon">💬</span><span class="cnt">${post.contribution_count||0}</span></button>
-            <button class="pact rb" data-pid="${post.id}"><span class="pi-icon">🔄</span><span class="cnt">${post.reproclaim_count||0}</span></button>
-            <button class="pact shb" data-pid="${post.id}"><span class="pi-icon">📤</span><span class="cnt">${post.share_count||0}</span></button>
-            <button class="pact svb ${uSaves.has(post.id)?'svd':''}" data-pid="${post.id}"><span class="pi-icon">🔖</span></button>
-        </div>`;
-        f.appendChild(card);
-    });
-}
 
-// READ MORE/LESS
-$('feed').addEventListener('click',e=>{
-    const btn=e.target.closest('[data-action="readmore"]');
-    if(btn){const pid=btn.dataset.pid;const body=$(pid?`body-${pid}`:'body-');if(body){const isTrunc=body.classList.contains('trunc');body.classList.toggle('trunc');btn.textContent=isTrunc?'Read less':'Read more'}}
-});
+        const themeManager = new ThemeManager();
 
-// EVENT DELEGATION
-$('feed').addEventListener('click',async e=>{
-    const btn=e.target.closest('button:not([data-action])');if(!btn)return;
-    const pid=btn.getAttribute('data-pid');if(!pid)return;
-    if(btn.classList.contains('sb'))await spac(pid,btn);
-    if(btn.classList.contains('cb'))openContrib(pid);
-    if(btn.classList.contains('rb'))await repro(pid,btn);
-    if(btn.classList.contains('shb'))await shareP(pid,btn);
-    if(btn.classList.contains('svb'))await saveP(pid,btn);
-});
+        // ============ Profile Service ============
+        class ProfileService {
+            async getProfile(uid) {
+                if (!uid) return null;
+                
+                // Check cache first
+                const cached = state.get('profiles').get(uid);
+                if (cached) return cached;
 
-async function spac(pid,btn){if(!cu)return T('Sign in first',1);const isS=btn.classList.contains('on');const ce=btn.querySelector('.cnt');let cnt=parseInt(ce.textContent)||0;if(isS){btn.classList.remove('on');ce.textContent=Math.max(0,cnt-1);await fetch(`${SU}/rest/v1/reactions?post_id=eq.${pid}&user_id=eq.${cu.uid}&reaction_type=eq.spac`,{method:'DELETE',headers:{'apikey':SK,'Authorization':`Bearer ${SK}`}})}else{btn.classList.add('on');ce.textContent=cnt+1;const ic=btn.querySelector('.pi-icon');ic.style.transform='scale(1.4)';setTimeout(()=>ic.style.transform='scale(1)',200);await fetch(`${SU}/rest/v1/reactions`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=minimal'},body:JSON.stringify({post_id:pid,user_id:cu.uid,reaction_type:'spac',created_at:new Date().toISOString()})})}}
+                try {
+                    const users = await api.get(`/rest/v1/users`, { id: `eq.${uid}`, limit: 1 });
+                    const profile = users[0] || null;
+                    
+                    if (profile) {
+                        state.get('profiles').set(uid, profile);
+                    }
+                    
+                    return profile;
+                } catch (error) {
+                    console.error('Failed to fetch profile:', error);
+                    return null;
+                }
+            }
 
-async function repro(pid,btn){if(!cu)return T('Sign in first',1);const chk=await fetch(`${SU}/rest/v1/reproclaims?user_id=eq.${cu.uid}&post_id=eq.${pid}&limit=1`,{headers:{'apikey':SK,'Authorization':`Bearer ${SK}`}});const ex=await chk.json();if(ex.length>0)return T('Already reproclaimed');await fetch(`${SU}/rest/v1/reproclaims`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=minimal'},body:JSON.stringify({user_id:cu.uid,post_id:pid,created_at:new Date().toISOString()})});const ce=btn.querySelector('.cnt');ce.textContent=(parseInt(ce.textContent)||0)+1;T('Reproclaimed! 🔄');setTimeout(renderFeed,600)}
+            async getProfilesBatch(uids) {
+                if (!uids.length) return {};
+                
+                const uniqueUids = [...new Set(uids)];
+                const profiles = {};
+                const toFetch = [];
 
-async function shareP(pid,btn){const url=`${location.origin}/post/${pid}`;let ok=false;if(navigator.share){try{await navigator.share({title:'SPACchat',url});ok=true}catch(e){}}
-if(!ok){try{await navigator.clipboard.writeText(url);ok=true;T('Link copied! 📤')}catch(e){}}
-if(ok){const ce=btn.querySelector('.cnt');const nc=(parseInt(ce.textContent)||0)+1;ce.textContent=nc;await fetch(`${SU}/rest/v1/posts?id=eq.${pid}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=minimal'},body:JSON.stringify({share_count:nc})})}}
+                // Check cache
+                uniqueUids.forEach(uid => {
+                    const cached = state.get('profiles').get(uid);
+                    if (cached) {
+                        profiles[uid] = cached;
+                    } else {
+                        toFetch.push(uid);
+                    }
+                });
 
-async function saveP(pid,btn){if(!cu)return T('Sign in first',1);const isS=btn.classList.contains('svd');const ic=btn.querySelector('.pi-icon');if(isS){btn.classList.remove('svd');ic.textContent='🔖';await fetch(`${SU}/rest/v1/saved_posts?user_id=eq.${cu.uid}&post_id=eq.${pid}`,{method:'DELETE',headers:{'apikey':SK,'Authorization':`Bearer ${SK}`}});T('Removed')}else{btn.classList.add('svd');ic.textContent='🔖✓';await fetch(`${SU}/rest/v1/saved_posts`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=minimal'},body:JSON.stringify({user_id:cu.uid,post_id:pid,collection:'default',created_at:new Date().toISOString()})});T('Saved!')}}
+                // Batch fetch remaining
+                if (toFetch.length) {
+                    try {
+                        const fetched = await api.get('/rest/v1/users', {
+                            id: `in.(${toFetch.join(',')})`
+                        });
+                        
+                        fetched.forEach(profile => {
+                            profiles[profile.id] = profile;
+                            state.get('profiles').set(profile.id, profile);
+                        });
+                    } catch (error) {
+                        console.error('Failed to batch fetch profiles:', error);
+                    }
+                }
 
-// CONTRIBUTIONS
-async function openContrib(pid){actPid=pid;$('contribList').innerHTML='<p style="color:var(--tm);text-align:center;padding:8px;">Loading...</p>';$('contribInput').value='';$('contribModal').classList.add('on');try{const c=await suF(`/rest/v1/contributions?post_id=eq.${pid}&order=created_at.asc&limit=100`);if(!c.length)$('contribList').innerHTML='<p style="color:var(--tm);text-align:center;padding:16px;">No contributions yet.</p>';else $('contribList').innerHTML=c.map(x=>`<div class="contrib-item"><div class="contrib-av">${ini(x.user_id?.substring(0,8)||'U')}</div><div class="contrib-body"><div class="contrib-name">@${x.user_id?.substring(0,8)||'user'}</div><div class="contrib-text">${eh(x.content)}</div><div class="contrib-time">${ta(x.created_at)}</div><div class="contrib-acts"><button class="contrib-act">🔥 Like</button><button class="contrib-act">💬 Reply</button></div></div></div>`).join('')}catch(e){$('contribList').innerHTML='<p style="color:var(--err);text-align:center;">Failed to load</p>'}}
-async function submitContrib(){const txt=$('contribInput').value.trim();if(!txt)return T('Write something',1);if(!cu||!actPid)return;await fetch(`${SU}/rest/v1/contributions`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=minimal'},body:JSON.stringify({post_id:actPid,user_id:cu.uid,content:txt,created_at:new Date().toISOString()})});T('Contribution added!');openContrib(actPid);const ce=document.querySelector(`.cb[data-pid="${actPid}"] .cnt`);if(ce)ce.textContent=(parseInt(ce.textContent)||0)+1}
-$('submitContrib').addEventListener('click',submitContrib);
-$('closeContribModal').addEventListener('click',()=>$('contribModal').classList.remove('on'));
-$('contribModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')});
-
-// CREATE POST
-function openPost(){upMedia=[];upVoice=null;$('mediaPreview').innerHTML='';$('voicePreview').style.display='none';$('voicePreview').innerHTML='';$('postContent').value='';$('postModal').classList.add('on');setTimeout(()=>$('postContent').focus(),400)}
-function closePost(){$('postModal').classList.remove('on');$('postContent').value='';upMedia=[];upVoice=null;$('mediaPreview').innerHTML='';$('voicePreview').style.display='none'}
-$('openCreate').addEventListener('click',openPost);$('openCreatePlus').addEventListener('click',openPost);
-$('closePostModal').addEventListener('click',closePost);
-$('postModal').addEventListener('click',function(e){if(e.target===this)closePost()});
-
-async function uploadToCloud(file,type='image'){
-    const fd=new FormData();fd.append('file',file);fd.append('upload_preset',CP);fd.append('cloud_name',CC);
-    if(type==='video')fd.append('resource_type','video');
-    const r=await fetch(`https://api.cloudinary.com/v1_1/${CC}/${type}/upload`,{method:'POST',body:fd});
-    const d=await r.json();return d.secure_url||null;
-}
-
-$('uploadImgBtn').addEventListener('click',()=>$('imgInput').click());
-$('uploadVidBtn').addEventListener('click',()=>$('vidInput').click());
-$('uploadDocBtn').addEventListener('click',()=>$('docInput').click());
-$('recordVoiceBtn').addEventListener('click',async()=>{
-    try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});const mr=new MediaRecorder(stream);const chunks=[];mr.ondataavailable=e=>chunks.push(e.data);mr.onstop=async()=>{const blob=new Blob(chunks,{type:'audio/webm'});const url=await uploadToCloud(new File([blob],'voice.webm',{type:'audio/webm'}),'video');if(url){upVoice=url;$('voicePreview').style.display='block';$('voicePreview').innerHTML=`<span>🎤 Voice note recorded</span><audio controls src="${url}" style="width:100%;height:28px"></audio>`}stream.getTracks().forEach(t=>t.stop())};mr.start();setTimeout(()=>mr.stop(),60000);T('Recording... Speak now (max 60s)');$('voicePreview').style.display='block';$('voicePreview').innerHTML='<span style="color:var(--err)">🔴 Recording...</span>'}catch(e){T('Microphone access denied',1)}
-});
-
-async function handleMediaInput(input,type){
-    const files=Array.from(input.files);
-    for(const file of files){
-        const url=await uploadToCloud(file,type==='video'?'video':'image');
-        if(url)upMedia.push({url,type});
-    }
-    $('mediaPreview').innerHTML=upMedia.map((m,i)=>`<div class="preview-item">${m.type==='video'?`<video src="${m.url}" preload="metadata"></video>`:`<img src="${m.url}">`}<button class="rm-btn" onclick="window._rmMedia(${i})">✕</button></div>`).join('');
-    input.value='';
-}
-window._rmMedia=function(i){upMedia.splice(i,1);$('mediaPreview').innerHTML=upMedia.map((m,i)=>`<div class="preview-item">${m.type==='video'?`<video src="${m.url}"></video>`:`<img src="${m.url}">`}<button class="rm-btn" onclick="window._rmMedia(${i})">✕</button></div>`).join('')};
-
-$('imgInput').addEventListener('change',e=>handleMediaInput(e.target,'image'));
-$('vidInput').addEventListener('change',e=>handleMediaInput(e.target,'video'));
-$('docInput').addEventListener('change',async e=>{
-    const files=Array.from(e.target.files);
-    for(const file of files){const url=await uploadToCloud(file,'raw');if(url)upMedia.push({url,type:'doc',name:file.name})}
-    $('mediaPreview').innerHTML=upMedia.map((m,i)=>`<div class="preview-item" style="display:flex;align-items:center;justify-content:center;background:var(--bg2)"><span style="font-size:24px">📄</span><button class="rm-btn" onclick="window._rmMedia(${i})">✕</button></div>`).join('');
-    e.target.value='';
-});
-
-async function submitPost(){
-    const content=$('postContent').value.trim();
-    if(!content&&!upMedia.length&&!upVoice)return T('Add content or media',1);
-    if(!cu)return T('Sign in first',1);
-    const btn=$('submitPost');btn.disabled=true;btn.textContent='Proclaiming...';
-    const now=new Date().toISOString();
-    const body={user_id:cu.uid,content:content||'',post_status:'published',created_at:now,updated_at:now};
-    if(upVoice){body.post_type='voice';body.media_urls=[upVoice]}
-    else if(upMedia.length){const hasVideo=upMedia.some(m=>m.type==='video');body.post_type=hasVideo?'video':'image';body.media_urls=upMedia.map(m=>m.url)}
-    else body.post_type='text';
-    try{await fetch(`${SU}/rest/v1/posts`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=representation'},body:JSON.stringify(body)});closePost();await renderFeed();T('Proclaimed! 🔥')}catch(e){T('Failed. Try again.',1)}finally{btn.disabled=false;btn.textContent='Proclaim 🔥'}
-}
-$('submitPost').addEventListener('click',submitPost);
-
-// STORIES
-async function loadStories(){
-    try{const s=await suF('/rest/v1/stories?order=created_at.desc&limit=30');const now=new Date();allStories=s.filter(x=>new Date(x.expires_at)>now);
-        const grouped={};allStories.forEach(st=>{if(!grouped[st.user_id])grouped[st.user_id]=[];grouped[st.user_id].push(st)});
-        $('storiesRow').innerHTML='';
-        const myBtn=document.createElement('button');myBtn.className='si';
-        myBtn.innerHTML=`<div class="sr mine"><div class="sa" id="myStoryAv">${cp?ini(cp.full_name||cp.username||'Me'):'ME'}</div></div><span class="sn">My Story</span>`;
-        myBtn.addEventListener('click',openStoryCreate);$('storiesRow').appendChild(myBtn);
-        const uids=Object.keys(grouped);const um={};
-        for(const uid of uids){um[uid]=await getProfile(uid)}
-        for(const uid of uids){
-            const p=um[uid];const nm=p?.full_name||p?.username||uid.substring(0,6)||'User';
-            const btn=document.createElement('button');btn.className='si';
-            btn.innerHTML=`<div class="sr"><div class="sa">${ini(nm)}</div></div><span class="sn">${nm.substring(0,8)}</span>`;
-            btn.addEventListener('click',()=>viewUserStories(uid,grouped[uid],nm));
-            $('storiesRow').appendChild(btn);
+                return profiles;
+            }
         }
-    }catch(e){$('storiesRow').innerHTML='<button class="si" id="myStoryOnly"><div class="sr mine"><div class="sa">ME</div></div><span class="sn">My Story</span></button>'}
-}
 
-let currentStoryUser=null,currentStorySet=[];
-function viewUserStories(uid,stories,name){
-    currentStoryUser=uid;currentStorySet=stories;storyIdx=0;
-    $('storyViewer').classList.add('on');showStory();
-    $('storyNav').innerHTML=stories.map((_,i)=>`<div class="story-dot${i===0?' act':''}" data-si="${i}"></div>`).join('');
-    $('storyNav').querySelectorAll('.story-dot').forEach(d=>{d.addEventListener('click',e=>{storyIdx=parseInt(e.target.dataset.si);showStory()})});
-}
-function showStory(){
-    const st=currentStorySet[storyIdx];if(!st)return;
-    $('storyContent').innerHTML=st.media_url?st.media_url.match(/\.(mp4|webm|mov)/i)?`<video src="${st.media_url}" autoplay playsinline style="max-width:100%;max-height:80vh" onended="window._nextStory()"></video>`:`<img src="${st.media_url}" style="max-width:100%;max-height:80vh;object-fit:contain">`:`<p style="color:#fff;font-size:18px">${eh(st.content||'')}</p>`;
-    $('storyNav').querySelectorAll('.story-dot').forEach((d,i)=>{d.classList.toggle('act',i===storyIdx)});
-    if(!st.media_url?.match(/\.(mp4|webm|mov)/i)){clearTimeout(window._st);window._st=setTimeout(window._nextStory,5000)}
-}
-window._nextStory=function(){storyIdx++;if(storyIdx>=currentStorySet.length){$('storyViewer').classList.remove('on')}else{showStory()}};
-$('closeStoryViewer').addEventListener('click',()=>{$('storyViewer').classList.remove('on');clearTimeout(window._st)});
+        const profileService = new ProfileService();
 
-function openStoryCreate(){storyMedia=null;$('storyPreview').innerHTML='';$('storyModal').classList.add('on')}
-$('storyImgBtn').addEventListener('click',()=>$('storyImgInput').click());
-$('storyVidBtn').addEventListener('click',()=>$('storyVidInput').click());
-async function handleStoryMedia(input,type){
-    const file=input.files[0];if(!file)return;$('storyPreview').innerHTML='<p style="color:var(--tm);font-size:12px;">Uploading...</p>';
-    const url=await uploadToCloud(file,type==='video'?'video':'image');
-    if(url){storyMedia={url,type};$('storyPreview').innerHTML=type==='video'?`<video src="${url}" controls style="max-width:100%;max-height:200px"></video>`:`<img src="${url}" style="max-width:100%;max-height:200px;border-radius:10px">`}
-    else $('storyPreview').innerHTML='<p style="color:var(--err)">Upload failed</p>'
-}
-$('storyImgInput').addEventListener('change',e=>handleStoryMedia(e.target,'image'));
-$('storyVidInput').addEventListener('change',e=>handleStoryMedia(e.target,'video'));
-$('submitStory').addEventListener('click',async()=>{
-    if(!storyMedia)return T('Add media',1);if(!cu)return T('Sign in first',1);
-    await fetch(`${SU}/rest/v1/stories`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':`Bearer ${SK}`,'Prefer':'return=minimal'},body:JSON.stringify({user_id:cu.uid,media_url:storyMedia.url,story_type:storyMedia.type==='video'?'video':'image',created_at:new Date().toISOString(),expires_at:new Date(Date.now()+86400000).toISOString()})});
-    $('storyModal').classList.remove('on');T('Story posted!');loadStories()
-});
-$('closeStoryModal').addEventListener('click',()=>$('storyModal').classList.remove('on'));
-$('storyModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')});
+        // ============ Feed Service ============
+        class FeedService {
+            async getFeed() {
+                try {
+                    const [postsResponse, reproclaimsResponse] = await Promise.all([
+                        api.get('/rest/v1/posts', {
+                            post_status: 'eq.published',
+                            order: 'created_at.desc',
+                            limit: CONFIG.FEED_PAGE_SIZE
+                        }),
+                        api.get('/rest/v1/reproclaims', {
+                            order: 'created_at.desc',
+                            limit: 30
+                        })
+                    ]);
 
-// INIT
-window.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>$('loader').classList.add('hidden'),1200)});
-setTimeout(()=>$('loader').classList.add('hidden'),2800);
-loadTheme();
+                    const posts = postsResponse || [];
+                    const reproclaims = reproclaimsResponse || [];
+                    
+                    // Build feed items
+                    const items = [];
+                    const postMap = new Map();
+                    
+                    posts.forEach(post => {
+                        postMap.set(post.id, post);
+                        items.push({ type: 'post', data: post, time: post.created_at });
+                    });
 
-onAuthStateChanged(auth,async(user)=>{
-    if(!user){location.href='index.html';return}
-    cu=user;cp=await getProfile(user.uid);
-    if(cp){const nm=cp.full_name||cp.username||'User';const inits=ini(nm);$('barAv').textContent=inits;$('headerAv').textContent=inits}
-    await renderFeed();loadStories();
-    // Check notifications
-    try{const n=await suF(`/rest/v1/notifications?user_id=eq.${cu.uid}&is_read=eq.false&limit=5`);if(n.length>0){$('notifBadge').classList.add('on');$('notifBadge').textContent=n.length}}catch(e){}
-});
+                    // Add reproclaims
+                    for (const repro of reproclaims) {
+                        if (postMap.has(repro.post_id)) {
+                            items.push({
+                                type: 'repro',
+                                data: { ...postMap.get(repro.post_id), repro_by: repro.user_id, repro_at: repro.created_at },
+                                time: repro.created_at
+                            });
+                        }
+                    }
 
-$('notifBtn').addEventListener('click',()=>T('Notifications coming soon'));
+                    // Sort by time
+                    items.sort((a, b) => new Date(b.time) - new Date(a.time));
+                    
+                    return items.slice(0, CONFIG.FEED_PAGE_SIZE);
+                } catch (error) {
+                    console.error('Failed to load feed:', error);
+                    throw error;
+                }
+            }
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePost();$('contribModal').classList.remove('on');$('storyModal').classList.remove('on');$('storyViewer').classList.remove('on');$('settingsModal').classList.remove('on');clearTimeout(window._st)}});
+            async loadUserInteractions(userId) {
+                if (!userId) return;
 
-console.log('🕊️ SPACchat Home | Light & Living');
-</script>
+                try {
+                    const [reactions, savedPosts] = await Promise.all([
+                        api.get('/rest/v1/reactions', {
+                            user_id: `eq.${userId}`,
+                            reaction_type: 'eq.spac'
+                        }),
+                        api.get('/rest/v1/saved_posts', {
+                            user_id: `eq.${userId}`
+                        })
+                    ]);
+
+                    const reactionSet = new Set(reactions.map(r => r.post_id));
+                    const savedSet = new Set(savedPosts.map(s => s.post_id));
+                    
+                    state.set('userReactions', reactionSet);
+                    state.set('userSavedPosts', savedSet);
+                } catch (error) {
+                    console.error('Failed to load user interactions:', error);
+                }
+            }
+        }
+
+        const feedService = new FeedService();
+
+        // ============ Post Actions Service ============
+        class PostActionsService {
+            async toggleSpac(postId, userId, button) {
+                if (!userId) {
+                    Toast.error('Sign in first');
+                    return;
+                }
+
+                const isActive = button.getAttribute('aria-pressed') === 'true';
+                const countElement = button.querySelector('.cnt');
+                let count = parseInt(countElement.textContent) || 0;
+
+                try {
+                    if (isActive) {
+                        // Remove reaction
+                        button.setAttribute('aria-pressed', 'false');
+                        button.classList.remove('on');
+                        countElement.textContent = Math.max(0, count - 1);
+                        
+                        await api.delete(`/rest/v1/reactions?post_id=eq.${postId}&user_id=eq.${userId}&reaction_type=eq.spac`);
+                    } else {
+                        // Add reaction
+                        button.setAttribute('aria-pressed', 'true');
+                        button.classList.add('on');
+                        countElement.textContent = count + 1;
+                        
+                        // Animate icon
+                        const icon = button.querySelector('.pi-icon');
+                        if (icon) {
+                            icon.style.transform = 'scale(1.4)';
+                            setTimeout(() => icon.style.transform = 'scale(1)', 200);
+                        }
+
+                        await api.post('/rest/v1/reactions', {
+                            post_id: postId,
+                            user_id: userId,
+                            reaction_type: 'spac',
+                            created_at: new Date().toISOString()
+                        });
+                    }
+                } catch (error) {
+                    // Revert on error
+                    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                    button.classList.toggle('on', isActive);
+                    countElement.textContent = count;
+                    Toast.error('Failed to update reaction');
+                }
+            }
+
+            async reproclaim(postId, userId, button) {
+                if (!userId) {
+                    Toast.error('Sign in first');
+                    return;
+                }
+
+                try {
+                    // Check if already reproclaimed
+                    const existing = await api.get('/rest/v1/reproclaims', {
+                        user_id: `eq.${userId}`,
+                        post_id: `eq.${postId}`,
+                        limit: 1
+                    });
+
+                    if (existing && existing.length > 0) {
+                        Toast.show('Already reproclaimed');
+                        return;
+                    }
+
+                    await api.post('/rest/v1/reproclaims', {
+                        user_id: userId,
+                        post_id: postId,
+                        created_at: new Date().toISOString()
+                    });
+
+                    const countElement = button.querySelector('.cnt');
+                    countElement.textContent = (parseInt(countElement.textContent) || 0) + 1;
+                    
+                    Toast.success('Reproclaimed! 🔄');
+                } catch (error) {
+                    Toast.error('Failed to reproclaim');
+                }
+            }
+
+            async sharePost(postId, button) {
+                const url = `${location.origin}/post/${postId}`;
+                let shared = false;
+
+                try {
+                    if (navigator.share) {
+                        await navigator.share({ title: 'SPACchat', url });
+                        shared = true;
+                    }
+                } catch (error) {
+                    // User cancelled or not supported
+                }
+
+                if (!shared) {
+                    try {
+                        await navigator.clipboard.writeText(url);
+                        Toast.success('Link copied! 📤');
+                        shared = true;
+                    } catch (error) {
+                        Toast.error('Failed to share');
+                        return;
+                    }
+                }
+
+                if (shared) {
+                    const countElement = button.querySelector('.cnt');
+                    const newCount = (parseInt(countElement.textContent) || 0) + 1;
+                    countElement.textContent = newCount;
+
+                    await api.patch(`/rest/v1/posts?id=eq.${postId}`, {
+                        share_count: newCount
+                    });
+                }
+            }
+
+            async toggleSave(postId, userId, button) {
+                if (!userId) {
+                    Toast.error('Sign in first');
+                    return;
+                }
+
+                const isSaved = button.classList.contains('svd');
+                const icon = button.querySelector('.pi-icon');
+
+                try {
+                    if (isSaved) {
+                        button.classList.remove('svd');
+                        icon.textContent = '🔖';
+                        
+                        await api.delete(`/rest/v1/saved_posts?user_id=eq.${userId}&post_id=eq.${postId}`);
+                        Toast.success('Removed from saved');
+                    } else {
+                        button.classList.add('svd');
+                        icon.textContent = '🔖✓';
+                        
+                        await api.post('/rest/v1/saved_posts', {
+                            user_id: userId,
+                            post_id: postId,
+                            collection: 'default',
+                            created_at: new Date().toISOString()
+                        });
+                        Toast.success('Saved!');
+                    }
+                } catch (error) {
+                    Toast.error('Failed to update save status');
+                }
+            }
+        }
+
+        const postActions = new PostActionsService();
+
+        // ============ Media Upload Service ============
+        class MediaUploadService {
+            validateFile(file, type) {
+                const maxSize = CONFIG.MAX_FILE_SIZE_MB * 1024 * 1024;
+                
+                if (file.size > maxSize) {
+                    throw new Error(`File too large. Maximum size is ${CONFIG.MAX_FILE_SIZE_MB}MB`);
+                }
+
+                if (type === 'image' && !file.type.startsWith('image/')) {
+                    throw new Error('Invalid image file');
+                }
+
+                if (type === 'video' && !file.type.startsWith('video/')) {
+                    throw new Error('Invalid video file');
+                }
+
+                return true;
+            }
+
+            async uploadToCloudinary(file, type = 'image') {
+                try {
+                    this.validateFile(file, type);
+
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('upload_preset', CONFIG.CLOUDINARY_UPLOAD_PRESET);
+                    formData.append('cloud_name', CONFIG.CLOUDINARY_CLOUD);
+
+                    if (type === 'video') {
+                        formData.append('resource_type', 'video');
+                    }
+
+                    const response = await fetch(
+                        `https://api.cloudinary.com/v1_1/${CONFIG.CLOUDINARY_CLOUD}/${type}/upload`,
+                        { method: 'POST', body: formData }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error('Upload failed');
+                    }
+
+                    const data = await response.json();
+                    return data.secure_url;
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    throw error;
+                }
+            }
+
+            async uploadMultipleFiles(files, type) {
+                const urls = [];
+                const errors = [];
+
+                for (const file of files) {
+                    try {
+                        const url = await this.uploadToCloudinary(file, type);
+                        urls.push({ url, type: file.type, name: file.name });
+                    } catch (error) {
+                        errors.push({ file: file.name, error: error.message });
+                    }
+                }
+
+                return { urls, errors };
+            }
+        }
+
+        const mediaUpload = new MediaUploadService();
+
+        // ============ UI Renderer ============
+        class UIRenderer {
+            renderFeed(items, profiles) {
+                const feed = $('feed');
+                feed.innerHTML = '';
+
+                if (!items.length) {
+                    feed.innerHTML = `
+                        <div class="empty" role="status">
+                            <div class="empty-icon" aria-hidden="true">🕊️</div>
+                            <div class="empty-title">No proclamations yet</div>
+                            <div class="empty-desc">Be the first to proclaim!</div>
+                        </div>`;
+                    return;
+                }
+
+                const userReactions = state.get('userReactions');
+                const userSavedPosts = state.get('userSavedPosts');
+
+                items.forEach((item, index) => {
+                    const post = item.data;
+                    const card = this.createPostCard(post, item.type, index, profiles, userReactions, userSavedPosts);
+                    feed.appendChild(card);
+                });
+            }
+
+            createPostCard(post, type, index, profiles, userReactions, userSavedPosts) {
+                const card = document.createElement('article');
+                card.className = 'post';
+                card.style.animationDelay = `${index * 0.02}s`;
+                card.setAttribute('data-pid', post.id);
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Post by ${profiles[post.user_id]?.full_name || 'User'}`);
+
+                const profile = profiles[post.user_id];
+                const reproProfile = post.repro_by ? profiles[post.repro_by] : null;
+                const displayName = profile?.full_name || profile?.username || 'User';
+                const hasMedia = post.media_urls && post.media_urls.length > 0;
+                const isLong = post.content && post.content.length > 200;
+
+                let mediaHTML = '';
+                if (hasMedia) {
+                    if (post.post_type === 'video' || post.media_urls.some(u => u.match(/\.(mp4|webm|mov)/i))) {
+                        mediaHTML = post.media_urls.map(url => 
+                            url.match(/\.(mp4|webm|mov)/i)
+                                ? `<video class="pimg" controls preload="metadata" style="max-height:300px" aria-label="Video content">
+                                     <source src="${escapeHtml(url)}" type="video/mp4">
+                                   </video>`
+                                : `<img class="pimg" src="${escapeHtml(url)}" loading="lazy" alt="Post image" onclick="window.open('${escapeHtml(url)}','_blank')">`
+                        ).join('');
+                    } else {
+                        const gridClass = post.media_urls.length === 1 ? 'g1' : 
+                                         post.media_urls.length === 2 ? 'g2' : 
+                                         post.media_urls.length === 3 ? 'g3' : 'g4';
+                        mediaHTML = `<div class="pimgs ${gridClass}">
+                            ${post.media_urls.map(url => 
+                                `<img class="pimg" src="${escapeHtml(url)}" loading="lazy" alt="Post image" onclick="window.open('${escapeHtml(url)}','_blank')">`
+                            ).join('')}
+                        </div>`;
+                    }
+                }
+
+                if (post.post_type === 'voice' && post.media_urls && post.media_urls[0]) {
+                    mediaHTML = `<div class="pvoice">
+                        <audio controls src="${escapeHtml(post.media_urls[0])}" aria-label="Voice note"></audio>
+                    </div>`;
+                }
+
+                let reproHTML = '';
+                if (type === 'repro' && reproProfile) {
+                    reproHTML = `<div class="rb">🔄 <strong>${escapeHtml(reproProfile.full_name || reproProfile.username || 'User')}</strong> reproclaimed • ${timeAgo(post.repro_at)}</div>`;
+                }
+
+                card.innerHTML = `
+                    ${reproHTML}
+                    <div class="ph">
+                        <div class="pa" aria-hidden="true">${getInitials(displayName)}</div>
+                        <div class="pi">
+                            <div class="pn">${escapeHtml(displayName)}</div>
+                            <div class="pt">${timeAgo(post.created_at)}</div>
+                        </div>
+                    </div>
+                    <div class="pb${isLong ? ' trunc' : ''}" id="body-${post.id}">${escapeHtml(post.content || '')}</div>
+                    ${isLong ? `<button class="rml" data-pid="${post.id}" data-action="readmore" aria-expanded="false">Read more</button>` : ''}
+                    ${mediaHTML}
+                    <div class="pacts">
+                        <button class="pact sb ${userReactions.has(post.id) ? 'on' : ''}" 
+                                data-pid="${post.id}" 
+                                aria-label="SPAC this post" 
+                                aria-pressed="${userReactions.has(post.id)}">
+                            <span class="pi-icon" aria-hidden="true">🔥</span>
+                            <span class="cnt">${post.spac_count || 0}</span>
+                        </button>
+                        <button class="pact cb" data-pid="${post.id}" aria-label="View contributions">
+                            <span class="pi-icon" aria-hidden="true">💬</span>
+                            <span class="cnt">${post.contribution_count || 0}</span>
+                        </button>
+                        <button class="pact rb" data-pid="${post.id}" aria-label="Reproclaim this post">
+                            <span class="pi-icon" aria-hidden="true">🔄</span>
+                            <span class="cnt">${post.reproclaim_count || 0}</span>
+                        </button>
+                        <button class="pact shb" data-pid="${post.id}" aria-label="Share this post">
+                            <span class="pi-icon" aria-hidden="true">📤</span>
+                            <span class="cnt">${post.share_count || 0}</span>
+                        </button>
+                        <button class="pact svb ${userSavedPosts.has(post.id) ? 'svd' : ''}" 
+                                data-pid="${post.id}" 
+                                aria-label="Save this post">
+                            <span class="pi-icon" aria-hidden="true">${userSavedPosts.has(post.id) ? '🔖✓' : '🔖'}</span>
+                        </button>
+                    </div>`;
+
+                return card;
+            }
+
+            renderStories(stories, currentUserId, profiles) {
+                const storiesRow = $('storiesRow');
+                if (!storiesRow) return;
+
+                storiesRow.innerHTML = '';
+
+                // My story button
+                const myBtn = document.createElement('button');
+                myBtn.className = 'si';
+                myBtn.setAttribute('role', 'listitem');
+                const currentProfile = state.get('currentProfile');
+                myBtn.innerHTML = `
+                    <div class="sr mine">
+                        <div class="sa" id="myStoryAv">${currentProfile ? getInitials(currentProfile.full_name || currentProfile.username || 'Me') : 'ME'}</div>
+                    </div>
+                    <span class="sn">My Story</span>`;
+                myBtn.addEventListener('click', () => this.openStoryCreate());
+                storiesRow.appendChild(myBtn);
+
+                // Group stories by user
+                const grouped = {};
+                stories.forEach(story => {
+                    if (!grouped[story.user_id]) grouped[story.user_id] = [];
+                    grouped[story.user_id].push(story);
+                });
+
+                // Render other users' stories
+                for (const uid in grouped) {
+                    if (uid === currentUserId) continue;
+                    
+                    const profile = profiles[uid];
+                    const name = profile?.full_name || profile?.username || uid.substring(0, 6) || 'User';
+                    
+                    const btn = document.createElement('button');
+                    btn.className = 'si';
+                    btn.setAttribute('role', 'listitem');
+                    btn.innerHTML = `
+                        <div class="sr">
+                            <div class="sa">${getInitials(name)}</div>
+                        </div>
+                        <span class="sn">${name.substring(0, 8)}</span>`;
+                    btn.addEventListener('click', () => this.viewUserStories(uid, grouped[uid], name));
+                    storiesRow.appendChild(btn);
+                }
+            }
+
+            openStoryCreate() {
+                state.set('storyMedia', null);
+                $('storyPreview').innerHTML = '';
+                this.openModal('storyModal');
+            }
+
+            viewUserStories(uid, stories, name) {
+                state.set('storyIndex', 0);
+                this.currentStorySet = stories;
+                this.currentStoryUser = uid;
+                
+                this.openModal('storyViewer');
+                this.showStory();
+                this.renderStoryDots(stories);
+            }
+
+            showStory() {
+                const stories = this.currentStorySet;
+                const index = state.get('storyIndex');
+                
+                if (!stories || !stories[index]) return;
+
+                const story = stories[index];
+                const content = $('storyContent');
+                
+                if (story.media_url) {
+                    if (story.media_url.match(/\.(mp4|webm|mov)/i)) {
+                        content.innerHTML = `<video src="${escapeHtml(story.media_url)}" autoplay playsinline 
+                            style="max-width:100%;max-height:80vh" onended="window._nextStory()" aria-label="Video story"></video>`;
+                    } else {
+                        content.innerHTML = `<img src="${escapeHtml(story.media_url)}" 
+                            style="max-width:100%;max-height:80vh;object-fit:contain" alt="Story image">`;
+                    }
+                } else if (story.content) {
+                    content.innerHTML = `<p style="color:#fff;font-size:18px">${escapeHtml(story.content)}</p>`;
+                }
+
+                this.updateStoryDots();
+
+                // Auto-advance for non-video stories
+                if (!story.media_url?.match(/\.(mp4|webm|mov)/i)) {
+                    clearTimeout(this._storyTimeout);
+                    this._storyTimeout = setTimeout(() => window._nextStory(), CONFIG.STORY_DURATION_MS);
+                }
+            }
+
+            renderStoryDots(stories) {
+                const nav = $('storyNav');
+                nav.innerHTML = stories.map((_, i) => 
+                    `<button class="story-dot${i === 0 ? ' active' : ''}" 
+                        data-si="${i}" 
+                        aria-label="Story ${i + 1}"
+                        role="tab"
+                        aria-selected="${i === 0}">
+                    </button>`
+                ).join('');
+
+                nav.querySelectorAll('.story-dot').forEach(dot => {
+                    dot.addEventListener('click', (e) => {
+                        state.set('storyIndex', parseInt(e.target.dataset.si));
+                        this.showStory();
+                    });
+                });
+            }
+
+            updateStoryDots() {
+                const dots = $$('.story-dot', $('storyNav'));
+                dots.forEach((dot, i) => {
+                    const isActive = i === state.get('storyIndex');
+                    dot.classList.toggle('active', isActive);
+                    dot.setAttribute('aria-selected', isActive);
+                });
+            }
+
+            openModal(modalId) {
+                const modal = $(modalId);
+                if (modal) {
+                    modal.setAttribute('aria-hidden', 'false');
+                    modal.classList.add('on');
+                    
+                    // Focus first focusable element
+                    setTimeout(() => {
+                        const focusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                        if (focusable) focusable.focus();
+                    }, 100);
+                }
+            }
+
+            closeModal(modalId) {
+                const modal = $(modalId);
+                if (modal) {
+                    modal.setAttribute('aria-hidden', 'true');
+                    modal.classList.remove('on');
+                }
+            }
+
+            closeAllModals() {
+                $$('.modal-overlay').forEach(modal => {
+                    this.closeModal(modal.id);
+                });
+                
+                const storyViewer = $('storyViewer');
+                if (storyViewer) {
+                    storyViewer.setAttribute('aria-hidden', 'true');
+                    storyViewer.classList.remove('on');
+                }
+                
+                clearTimeout(this._storyTimeout);
+            }
+        }
+
+        const ui = new UIRenderer();
+
+        // ============ Application Controller ============
+        class AppController {
+            constructor() {
+                this.init();
+            }
+
+            async init() {
+                // Initialize theme
+                themeManager.init();
+
+                // Setup event listeners
+                this.setupEventListeners();
+
+                // Show loader for minimum time
+                setTimeout(() => {
+                    const loader = $('loader');
+                    if (loader) {
+                        loader.setAttribute('aria-hidden', 'true');
+                        loader.classList.add('hidden');
+                    }
+                }, 1200);
+
+                // Fallback loader hide
+                setTimeout(() => {
+                    const loader = $('loader');
+                    if (loader && loader.getAttribute('aria-hidden') !== 'true') {
+                        loader.setAttribute('aria-hidden', 'true');
+                        loader.classList.add('hidden');
+                    }
+                }, 3000);
+
+                // Check auth state
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) {
+                        window.location.href = 'index.html';
+                        return;
+                    }
+
+                    await this.onUserAuthenticated(user);
+                });
+            }
+
+            async onUserAuthenticated(user) {
+                try {
+                    const profile = await profileService.getProfile(user.uid);
+                    
+                    state.set('currentUser', user);
+                    state.set('currentProfile', profile);
+
+                    // Update UI with user info
+                    if (profile) {
+                        const name = profile.full_name || profile.username || 'User';
+                        const initials = getInitials(name);
+                        $('barAv').textContent = initials;
+                        $('headerAv').textContent = initials;
+                    }
+
+                    // Load initial data
+                    await Promise.all([
+                        this.loadFeed(),
+                        this.loadStories(),
+                        feedService.loadUserInteractions(user.uid)
+                    ]);
+
+                    // Check notifications
+                    this.checkNotifications(user.uid);
+                } catch (error) {
+                    console.error('Authentication setup failed:', error);
+                    Toast.error('Failed to load user data');
+                }
+            }
+
+            async loadFeed() {
+                try {
+                    const items = await feedService.getFeed();
+                    
+                    // Batch load all required profiles
+                    const userIds = new Set();
+                    items.forEach(item => {
+                        userIds.add(item.data.user_id);
+                        if (item.data.repro_by) userIds.add(item.data.repro_by);
+                    });
+
+                    const profiles = await profileService.getProfilesBatch([...userIds]);
+                    
+                    ui.renderFeed(items, profiles);
+                } catch (error) {
+                    console.error('Failed to load feed:', error);
+                    Toast.error('Failed to load posts');
+                }
+            }
+
+            async loadStories() {
+                try {
+                    const stories = await api.get('/rest/v1/stories', {
+                        order: 'created_at.desc',
+                        limit: 30
+                    });
+
+                    const now = new Date();
+                    const activeStories = stories.filter(story => new Date(story.expires_at) > now);
+                    state.set('allStories', activeStories);
+
+                    const userIds = new Set(activeStories.map(s => s.user_id));
+                    const profiles = await profileService.getProfilesBatch([...userIds]);
+
+                    const currentUser = state.get('currentUser');
+                    ui.renderStories(activeStories, currentUser?.uid, profiles);
+                } catch (error) {
+                    console.error('Failed to load stories:', error);
+                }
+            }
+
+            async checkNotifications(userId) {
+                try {
+                    const notifications = await api.get('/rest/v1/notifications', {
+                        user_id: `eq.${userId}`,
+                        is_read: 'eq.false',
+                        limit: 5
+                    });
+
+                    const badge = $('notifBadge');
+                    if (badge && notifications.length > 0) {
+                        badge.setAttribute('data-visible', 'true');
+                        badge.textContent = notifications.length;
+                    } else if (badge) {
+                        badge.setAttribute('data-visible', 'false');
+                    }
+                } catch (error) {
+                    console.error('Failed to check notifications:', error);
+                }
+            }
+
+            setupEventListeners() {
+                // Theme toggle
+                $('themeToggle')?.addEventListener('click', () => themeManager.toggle());
+                $('darkModeRow')?.addEventListener('click', () => themeManager.toggle());
+                $('darkModeRow')?.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        themeManager.toggle();
+                    }
+                });
+
+                // Settings
+                $('settingsBtn')?.addEventListener('click', () => ui.openModal('settingsModal'));
+                $('closeSettingsModal')?.addEventListener('click', () => ui.closeModal('settingsModal'));
+
+                // Logout
+                $('logoutBtn')?.addEventListener('click', async () => {
+                    try {
+                        await signOut(auth);
+                        window.location.href = 'index.html';
+                    } catch (error) {
+                        Toast.error('Failed to sign out');
+                    }
+                });
+
+                // Create post
+                $('openCreate')?.addEventListener('click', () => this.openCreatePost());
+                $('openCreatePlus')?.addEventListener('click', () => this.openCreatePost());
+                $('closePostModal')?.addEventListener('click', () => ui.closeModal('postModal'));
+
+                // Submit post
+                $('submitPost')?.addEventListener('click', () => this.submitPost());
+
+                // Contributions
+                $('closeContribModal')?.addEventListener('click', () => ui.closeModal('contribModal'));
+                $('submitContrib')?.addEventListener('click', () => this.submitContribution());
+
+                // Story viewer
+                $('closeStoryViewer')?.addEventListener('click', () => {
+                    ui.closeModal('storyViewer');
+                    clearTimeout(ui._storyTimeout);
+                });
+
+                // Story creation
+                $('closeStoryModal')?.addEventListener('click', () => ui.closeModal('storyModal'));
+                $('submitStory')?.addEventListener('click', () => this.submitStory());
+
+                // Media upload triggers
+                $('uploadImgBtn')?.addEventListener('click', () => $('imgInput').click());
+                $('uploadVidBtn')?.addEventListener('click', () => $('vidInput').click());
+                $('uploadDocBtn')?.addEventListener('click', () => $('docInput').click());
+                $('recordVoiceBtn')?.addEventListener('click', () => this.recordVoice());
+
+                // Story media
+                $('storyImgBtn')?.addEventListener('click', () => $('storyImgInput').click());
+                $('storyVidBtn')?.addEventListener('click', () => $('storyVidInput').click());
+
+                // File input handlers
+                $('imgInput')?.addEventListener('change', (e) => this.handleMediaInput(e.target, 'image'));
+                $('vidInput')?.addEventListener('change', (e) => this.handleMediaInput(e.target, 'video'));
+                $('docInput')?.addEventListener('change', (e) => this.handleDocInput(e.target));
+                $('storyImgInput')?.addEventListener('change', (e) => this.handleStoryMediaInput(e.target, 'image'));
+                $('storyVidInput')?.addEventListener('change', (e) => this.handleStoryMediaInput(e.target, 'video'));
+
+                // Feed event delegation
+                $('feed')?.addEventListener('click', (e) => this.handleFeedClick(e));
+
+                // Read more handler
+                $('feed')?.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-action="readmore"]');
+                    if (btn) this.toggleReadMore(btn);
+                });
+
+                // Modal overlay clicks
+                $$('.modal-overlay').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) ui.closeModal(modal.id);
+                    });
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        ui.closeAllModals();
+                    }
+                });
+
+                // Settings modal overlay
+                $('settingsModal')?.addEventListener('click', (e) => {
+                    if (e.target === $('settingsModal')) ui.closeModal('settingsModal');
+                });
+
+                // Next story handler
+                window._nextStory = () => {
+                    const stories = ui.currentStorySet;
+                    if (!stories) return;
+                    
+                    const nextIndex = state.get('storyIndex') + 1;
+                    if (nextIndex >= stories.length) {
+                        ui.closeModal('storyViewer');
+                        clearTimeout(ui._storyTimeout);
+                    } else {
+                        state.set('storyIndex', nextIndex);
+                        ui.showStory();
+                    }
+                };
+
+                // Remove media handler
+                window._rmMedia = (index) => {
+                    const media = state.get('uploadMedia');
+                    media.splice(index, 1);
+                    state.set('uploadMedia', media);
+                    this.renderMediaPreviews();
+                };
+            }
+
+            async handleFeedClick(e) {
+                const btn = e.target.closest('button:not([data-action])');
+                if (!btn) return;
+
+                const postId = btn.getAttribute('data-pid');
+                if (!postId) return;
+
+                const userId = state.get('currentUser')?.uid;
+
+                if (btn.classList.contains('sb')) {
+                    await postActions.toggleSpac(postId, userId, btn);
+                } else if (btn.classList.contains('cb')) {
+                    await this.openContributions(postId);
+                } else if (btn.classList.contains('rb')) {
+                    await postActions.reproclaim(postId, userId, btn);
+                    // Refresh feed after delay
+                    setTimeout(() => this.loadFeed(), 600);
+                } else if (btn.classList.contains('shb')) {
+                    await postActions.sharePost(postId, btn);
+                } else if (btn.classList.contains('svb')) {
+                    await postActions.toggleSave(postId, userId, btn);
+                }
+            }
+
+            toggleReadMore(btn) {
+                const postId = btn.dataset.pid;
+                const body = $(`body-${postId}`);
+                if (!body) return;
+
+                const isTruncated = body.classList.contains('trunc');
+                body.classList.toggle('trunc');
+                btn.textContent = isTruncated ? 'Read less' : 'Read more';
+                btn.setAttribute('aria-expanded', isTruncated);
+            }
+
+            openCreatePost() {
+                state.set('uploadMedia', []);
+                state.set('uploadVoice', null);
+                $('mediaPreview').innerHTML = '';
+                $('voicePreview').style.display = 'none';
+                $('voicePreview').innerHTML = '';
+                $('postContent').value = '';
+                
+                ui.openModal('postModal');
+                setTimeout(() => $('postContent')?.focus(), 400);
+            }
+
+            async handleMediaInput(input, type) {
+                const files = Array.from(input.files);
+                const currentMedia = state.get('uploadMedia');
+
+                if (currentMedia.length + files.length > CONFIG.MAX_MEDIA_FILES) {
+                    Toast.error(`Maximum ${CONFIG.MAX_MEDIA_FILES} files allowed`);
+                    input.value = '';
+                    return;
+                }
+
+                try {
+                    const { urls, errors } = await mediaUpload.uploadMultipleFiles(files, type);
+                    
+                    if (errors.length) {
+                        Toast.error(`${errors.length} file(s) failed to upload`);
+                    }
+
+                    const newMedia = [...currentMedia, ...urls];
+                    state.set('uploadMedia', newMedia);
+                    this.renderMediaPreviews();
+                } catch (error) {
+                    Toast.error('Upload failed');
+                }
+
+                input.value = '';
+            }
+
+            async handleDocInput(input) {
+                const files = Array.from(input.files);
+                const currentMedia = state.get('uploadMedia');
+
+                for (const file of files) {
+                    try {
+                        const url = await mediaUpload.uploadToCloudinary(file, 'raw');
+                        currentMedia.push({ url, type: 'doc', name: file.name });
+                    } catch (error) {
+                        Toast.error(`Failed to upload ${file.name}`);
+                    }
+                }
+
+                state.set('uploadMedia', currentMedia);
+                this.renderMediaPreviews();
+                input.value = '';
+            }
+
+            async recordVoice() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const mediaRecorder = new MediaRecorder(stream);
+                    const chunks = [];
+
+                    mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+                    
+                    mediaRecorder.onstop = async () => {
+                        const blob = new Blob(chunks, { type: 'audio/webm' });
+                        try {
+                            const url = await mediaUpload.uploadToCloudinary(
+                                new File([blob], 'voice.webm', { type: 'audio/webm' }),
+                                'video'
+                            );
+                            
+                            if (url) {
+                                state.set('uploadVoice', url);
+                                $('voicePreview').style.display = 'flex';
+                                $('voicePreview').innerHTML = `
+                                    <span>🎤 Voice note recorded</span>
+                                    <audio controls src="${escapeHtml(url)}" style="width:100%;height:28px" aria-label="Voice note preview"></audio>`;
+                            }
+                        } catch (error) {
+                            Toast.error('Failed to upload voice note');
+                        }
+                        
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    mediaRecorder.start();
+                    Toast.show('Recording... Speak now (max 60s)');
+                    
+                    $('voicePreview').style.display = 'flex';
+                    $('voicePreview').innerHTML = '<span style="color:var(--err)">🔴 Recording...</span>';
+
+                    // Auto-stop after 60 seconds
+                    setTimeout(() => {
+                        if (mediaRecorder.state === 'recording') {
+                            mediaRecorder.stop();
+                        }
+                    }, 60000);
+
+                } catch (error) {
+                    Toast.error('Microphone access denied');
+                }
+            }
+
+            renderMediaPreviews() {
+                const media = state.get('uploadMedia');
+                const preview = $('mediaPreview');
+                
+                preview.innerHTML = media.map((m, i) => `
+                    <div class="preview-item">
+                        ${m.type.startsWith('video/') 
+                            ? `<video src="${escapeHtml(m.url)}" preload="metadata"></video>`
+                            : m.type === 'doc'
+                                ? `<span style="font-size:24px">📄</span>`
+                                : `<img src="${escapeHtml(m.url)}" alt="Upload preview">`
+                        }
+                        <button class="rm-btn" onclick="window._rmMedia(${i})" aria-label="Remove media">✕</button>
+                    </div>
+                `).join('');
+            }
+
+            async handleStoryMediaInput(input, type) {
+                const file = input.files[0];
+                if (!file) return;
+
+                $('storyPreview').innerHTML = '<p style="color:var(--tm);font-size:12px;">Uploading...</p>';
+
+                try {
+                    const url = await mediaUpload.uploadToCloudinary(file, type);
+                    
+                    if (url) {
+                        state.set('storyMedia', { url, type });
+                        $('storyPreview').innerHTML = type === 'video'
+                            ? `<video src="${escapeHtml(url)}" controls style="max-width:100%;max-height:200px" aria-label="Story preview"></video>`
+                            : `<img src="${escapeHtml(url)}" style="max-width:100%;max-height:200px;border-radius:10px" alt="Story preview">`;
+                    }
+                } catch (error) {
+                    $('storyPreview').innerHTML = '<p style="color:var(--err)">Upload failed</p>';
+                }
+
+                input.value = '';
+            }
+
+            async submitPost() {
+                const content = $('postContent').value.trim();
+                const media = state.get('uploadMedia');
+                const voice = state.get('uploadVoice');
+                const user = state.get('currentUser');
+
+                if (!content && !media.length && !voice) {
+                    Toast.error('Add content or media');
+                    return;
+                }
+
+                if (!user) {
+                    Toast.error('Sign in first');
+                    return;
+                }
+
+                const btn = $('submitPost');
+                btn.disabled = true;
+                btn.textContent = 'Proclaiming...';
+
+                try {
+                    const now = new Date().toISOString();
+                    const postData = {
+                        user_id: user.uid,
+                        content: content || '',
+                        post_status: 'published',
+                        created_at: now,
+                        updated_at: now
+                    };
+
+                    if (voice) {
+                        postData.post_type = 'voice';
+                        postData.media_urls = [voice];
+                    } else if (media.length) {
+                        const hasVideo = media.some(m => m.type.startsWith('video/'));
+                        postData.post_type = hasVideo ? 'video' : 'image';
+                        postData.media_urls = media.map(m => m.url);
+                    } else {
+                        postData.post_type = 'text';
+                    }
+
+                    await api.post('/rest/v1/posts', postData);
+                    
+                    ui.closeModal('postModal');
+                    await this.loadFeed();
+                    Toast.success('Proclaimed! 🔥');
+                } catch (error) {
+                    Toast.error('Failed to post. Please try again.');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Proclaim 🔥';
+                }
+            }
+
+            async openContributions(postId) {
+                state.set('activePostId', postId);
+                $('contribList').innerHTML = '<p style="color:var(--tm);text-align:center;padding:8px;">Loading...</p>';
+                $('contribInput').value = '';
+                
+                ui.openModal('contribModal');
+
+                try {
+                    const contributions = await api.get('/rest/v1/contributions', {
+                        post_id: `eq.${postId}`,
+                        order: 'created_at.asc',
+                        limit: 100
+                    });
+
+                    if (!contributions.length) {
+                        $('contribList').innerHTML = '<p style="color:var(--tm);text-align:center;padding:16px;">No contributions yet.</p>';
+                    } else {
+                        $('contribList').innerHTML = contributions.map(c => `
+                            <div class="contrib-item" role="listitem">
+                                <div class="contrib-av" aria-hidden="true">${getInitials(c.user_id?.substring(0,8) || 'U')}</div>
+                                <div class="contrib-body">
+                                    <div class="contrib-name">@${escapeHtml(c.user_id?.substring(0,8) || 'user')}</div>
+                                    <div class="contrib-text">${escapeHtml(c.content)}</div>
+                                    <div class="contrib-time">${timeAgo(c.created_at)}</div>
+                                    <div class="contrib-acts">
+                                        <button class="contrib-act" aria-label="Like contribution">🔥 Like</button>
+                                        <button class="contrib-act" aria-label="Reply to contribution">💬 Reply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                } catch (error) {
+                    $('contribList').innerHTML = '<p style="color:var(--err);text-align:center;">Failed to load contributions</p>';
+                }
+            }
+
+            async submitContribution() {
+                const text = $('contribInput').value.trim();
+                const user = state.get('currentUser');
+                const postId = state.get('activePostId');
+
+                if (!text) {
+                    Toast.error('Write something');
+                    return;
+                }
+
+                if (!user || !postId) return;
+
+                try {
+                    await api.post('/rest/v1/contributions', {
+                        post_id: postId,
+                        user_id: user.uid,
+                        content: text,
+                        created_at: new Date().toISOString()
+                    });
+
+                    Toast.success('Contribution added!');
+                    
+                    // Refresh contributions
+                    await this.openContributions(postId);
+                    
+                    // Update contribution count in feed
+                    const countElement = document.querySelector(`.cb[data-pid="${postId}"] .cnt`);
+                    if (countElement) {
+                        countElement.textContent = (parseInt(countElement.textContent) || 0) + 1;
+                    }
+                } catch (error) {
+                    Toast.error('Failed to add contribution');
+                }
+            }
+
+            async submitStory() {
+                const storyMedia = state.get('storyMedia');
+                const user = state.get('currentUser');
+
+                if (!storyMedia) {
+                    Toast.error('Add media');
+                    return;
+                }
+
+                if (!user) {
+                    Toast.error('Sign in first');
+                    return;
+                }
+
+                try {
+                    await api.post('/rest/v1/stories', {
+                        user_id: user.uid,
+                        media_url: storyMedia.url,
+                        story_type: storyMedia.type === 'video' ? 'video' : 'image',
+                        created_at: new Date().toISOString(),
+                        expires_at: new Date(Date.now() + 86400000).toISOString() // 24 hours
+                    });
+
+                    ui.closeModal('storyModal');
+                    Toast.success('Story posted!');
+                    await this.loadStories();
+                } catch (error) {
+                    Toast.error('Failed to post story');
+                }
+            }
+        }
+
+        // ============ Initialize Application ============
+        const appController = new AppController();
+
+        // Export for debugging
+        window.appController = appController;
+        window.appState = state;
+
+        console.log('🕊️ SPACchat Home | Production Ready');
+    </script>
 </body>
 </html>
